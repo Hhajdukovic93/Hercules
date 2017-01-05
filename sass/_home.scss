@@ -1,0 +1,85 @@
+.prepare {
+	border-bottom: 2px solid $color-prepare;
+	margin-bottom: 3%;
+}
+
+.work {
+	border-bottom: 2px solid $color-work;
+	margin-bottom: 3%;
+}
+
+.rest {
+	border-bottom: 2px solid $color-rest;
+	margin-bottom: 3%;
+}
+
+.cycles {
+	border-bottom: 2px solid $color-gray;
+	margin-bottom: 3%;
+}
+
+.tabatas {
+	border-bottom: 2px solid $color-gray;
+	margin-bottom: 3%;
+}
+
+
+.key-words {
+  margin-left: 10px;
+  line-height: 28px;
+  vertical-align: middle;
+}
+
+
+input.key-numbers {
+  float: right;
+  clear: both;
+  border: 0;
+  text-align: center;
+}
+
+input.key-numbers::-webkit-inner-spin-button, 
+input.key-numbers::-webkit-outer-spin-button {  
+  opacity: 1;
+}
+
+input.key-numbers--extra {
+  float: right;
+  clear: both;
+  border: 0;
+  text-align: center;
+}
+
+input.key-numbers--extra::-webkit-inner-spin-button, 
+input.key-numbers--extra::-webkit-outer-spin-button {  
+  opacity: 1;
+}
+
+
+
+
+
+
+.buttons {
+	display : flex;
+	justify-content: space-between;
+	padding-top: 3%;
+}
+	.button {
+		background-color: $color-gray;
+		display: inline-block;
+		height: 40px;
+		width: 26%;
+		border-radius: 50%;
+	}
+
+	.button:hover {
+		background-color: $color-gray--ligh;
+
+	}
+
+		.button-image {
+		  display: block;
+		  margin: auto;
+		  margin-top: 14%;
+		}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	  <title>Hercules</title>
+	  <meta charset="UTF-8">
+      <!-- Bootstrap Core CSS -->
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+	  <!-- Developer CSS -->
+	  <link rel="stylesheet" type="text/css" href="css/main.css">
+	  <!-- Developer JS -->
+	  <script type="text/javascript" src="js/hercules.js"></script>
+	  <!--  D3 vizualization -->
+	  <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+	  <!--  Lato font from Google Font -->
+	  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+	</head>
+
+
+	<body>
+	  <div class="container">
+	    <div class="row [col-xs-6 ]">
+
+	    	<div class="vizualization"></div>
+
+	    	<div class="menu">
+	    		<form>
+	    			<div class="prepare">
+		    			<span class="key-words">PREPARE</span>
+	  					<input type="number" name="prepare" min="0" max="100" step="1" value="1" class="key-numbers">
+	  					<br>
+  					</div>
+
+  					<div class="work">
+	  					<span class="key-words">WORK</span>
+	  					<input type="number" name="work" min="0" max="100" step="1" value="1" class="key-numbers">
+	  					<br>
+  					</div>
+
+  					<div class="rest"> 
+	  					<span class="key-words">REST</span>
+	  					<input type="number" name="rest" min="0" max="100" step="1" value="1" class="key-numbers">
+	  					<br>
+  					</div>
+
+
+  					<div class="cycles"> 
+	  					<span class="key-words">CYCLES</span>
+	  					<input type="number" name="cycles" min="0" max="100" step="1" value="1" class="key-numbers--extra">
+	  					<br>
+  					</div>
+
+  					<div class="tabatas"> 
+	  					<span class="key-words">TABATAS</span>
+	  					<input type="number" name="tabatas" min="0" max="100" step="1" value="1" class="key-numbers--extra">
+	  					<br>
+  					</div>
+	    		</form>
+
+
+	    		<div class="buttons"> 
+	    			<div class="button"><img src="assets/play.svg" class="button-image"></div>
+	    			<div class="button"><img src="assets/pause.svg" class="button-image"></div>
+	    			<div class="button"><img src="assets/repeat.svg" class="button-image"></div>
+  				</div>
+	    	</div>
+
+	    </div> <!-- / row -->
+	  </div> <!-- / container -->
+	</body>
+</html>

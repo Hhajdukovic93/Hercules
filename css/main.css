@@ -1,0 +1,113 @@
+.container {
+  width: 100%; }
+
+.row {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin-top: 10%; }
+
+.vizualization {
+  width: 400px;
+  height: 400px;
+  background-color: #777777; }
+
+.menu {
+  width: 200px;
+  height: 400px;
+  padding-top: 3%; }
+
+body {
+  font-family: 'Lato', sans-serif; }
+
+.prvi {
+  font-size: 14px;
+  font-weight: 300; }
+
+.drugi {
+  font-size: 10px;
+  font-weight: 300; }
+
+.treci {
+  font-size: 18px;
+  font-weight: 300; }
+
+.cetvrti {
+  font-size: 18px;
+  font-weight: 400; }
+
+.cetvrti {
+  font-size: 85px;
+  font-weight: 400; }
+
+.prepare {
+  border-bottom: 2px solid #D8FF1A;
+  margin-bottom: 3%; }
+
+.work {
+  border-bottom: 2px solid #52FF83;
+  margin-bottom: 3%; }
+
+.rest {
+  border-bottom: 2px solid #FF5C36;
+  margin-bottom: 3%; }
+
+.cycles {
+  border-bottom: 2px solid #EDEDED;
+  margin-bottom: 3%; }
+
+.tabatas {
+  border-bottom: 2px solid #EDEDED;
+  margin-bottom: 3%; }
+
+.key-words {
+  margin-left: 10px;
+  line-height: 28px;
+  vertical-align: middle; }
+
+input.key-numbers {
+  float: right;
+  clear: both;
+  border: 0;
+  text-align: center; }
+
+input.key-numbers::-webkit-inner-spin-button,
+input.key-numbers::-webkit-outer-spin-button {
+  opacity: 1; }
+
+input.key-numbers--extra {
+  float: right;
+  clear: both;
+  border: 0;
+  text-align: center; }
+
+input.key-numbers--extra::-webkit-inner-spin-button,
+input.key-numbers--extra::-webkit-outer-spin-button {
+  opacity: 1; }
+
+.buttons {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-top: 3%; }
+
+.button {
+  background-color: #EDEDED;
+  display: inline-block;
+  height: 40px;
+  width: 26%;
+  border-radius: 50%; }
+
+.button:hover {
+  background-color: #E2E2E2; }
+
+.button-image {
+  display: block;
+  margin: auto;
+  margin-top: 14%; }
