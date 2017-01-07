@@ -16,6 +16,7 @@
 .cycles {
 	border-bottom: 2px solid $color-gray;
 	margin-bottom: 3%;
+	margin-top: 5%;
 }
 
 .tabatas {
@@ -66,7 +67,6 @@ input.key-numbers--extra::-webkit-outer-spin-button {
 	padding-top: 3%;
 }
 	.button {
-		background-color: $color-gray;
 		display: inline-block;
 		height: 40px;
 		width: 26%;
@@ -78,8 +78,15 @@ input.key-numbers--extra::-webkit-outer-spin-button {
 
 	}
 
-		.button-image {
-		  display: block;
-		  margin: auto;
-		  margin-top: 14%;
+		.button-image--play {
+		  background: url("../img/play.svg") no-repeat center;
+		  background-color: $color-gray;
+		}
+		.button-image--pause {
+		  background: url("../img/pause.svg") no-repeat center;
+		  background-color: $color-gray;
+		}
+		.button-image--reset {
+		  background: url("../img/repeat.svg") no-repeat center;
+		  background-color: $color-gray;
 		}

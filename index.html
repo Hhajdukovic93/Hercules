@@ -11,57 +11,61 @@
 	  <!-- Developer JS -->
 	  <script type="text/javascript" src="js/hercules.js"></script>
 	  <!--  D3 vizualization -->
-	  <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+	  <script type="text/javascript" src="js/d3.js"></script>
 	  <!--  Lato font from Google Font -->
 	  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 	</head>
 
 
-	<body>
+	<body onload="Setup()">
 	  <div class="container">
-	    <div class="row [col-xs-6 ]">
+	    <div class="row">
 
-	    	<div class="vizualization"></div>
+	    	<div id="js-clock" class="clock">
+
+	    	</div>
+
 
 	    	<div class="menu">
 	    		<form>
+
 	    			<div class="prepare">
-		    			<span class="key-words">PREPARE</span>
-	  					<input type="number" name="prepare" min="0" max="100" step="1" value="1" class="key-numbers">
+		    			<label class="key-words prvi">PREPARE</label>
+	  					<input type="number" name="prepare" min="4" max="300" step="1" value="4" class="key-numbers" id="prepare">
 	  					<br>
   					</div>
 
-  					<div class="work">
-	  					<span class="key-words">WORK</span>
-	  					<input type="number" name="work" min="0" max="100" step="1" value="1" class="key-numbers">
+  					<div class="work"> 
+	  					<label class="key-words prvi">WORK</label>
+	  					<input type="number" name="work" min="4" max="300" step="1" value="5" class="key-numbers" id="work">
 	  					<br>
   					</div>
 
   					<div class="rest"> 
-	  					<span class="key-words">REST</span>
-	  					<input type="number" name="rest" min="0" max="100" step="1" value="1" class="key-numbers">
+	  					<label class="key-words prvi">REST</label>
+	  					<input type="number" name="rest" min="4" max="300" step="1" value="6" class="key-numbers" id="rest">
 	  					<br>
   					</div>
 
 
   					<div class="cycles"> 
-	  					<span class="key-words">CYCLES</span>
-	  					<input type="number" name="cycles" min="0" max="100" step="1" value="1" class="key-numbers--extra">
+	  					<label class="key-words prvi">CYCLES</label>
+	  					<input type="number" name="cycles" min="1" max="100" step="1" value="2" class="key-numbers--extra" id="cycles">
 	  					<br>
   					</div>
 
   					<div class="tabatas"> 
-	  					<span class="key-words">TABATAS</span>
-	  					<input type="number" name="tabatas" min="0" max="100" step="1" value="1" class="key-numbers--extra">
+	  					<label class="key-words prvi">TABATAS</label>
+	  					<input type="number" name="tabatas" min="1" max="100" step="1" value="3" class="key-numbers--extra" id="tabatas">
 	  					<br>
   					</div>
 	    		</form>
 
 
 	    		<div class="buttons"> 
-	    			<div class="button"><img src="assets/play.svg" class="button-image"></div>
-	    			<div class="button"><img src="assets/pause.svg" class="button-image"></div>
-	    			<div class="button"><img src="assets/repeat.svg" class="button-image"></div>
+	    			<div id="js-play" class="[ button  button-image--play ]" onclick="Play()"></div>
+	    			<div id="js-pause" class="[ button  button-image--pause ]" onclick="Pause()"></div>
+	    			<div id="js-reset" class="[ button  button-image--reset ]" onclick="Reset()"></div>
   				</div>
 	    	</div>
 

@@ -8,15 +8,15 @@
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  margin-top: 10%; }
+  margin-top: 10%;
+  max-width: 1600px; }
 
-.vizualization {
-  width: 400px;
-  height: 400px;
-  background-color: #777777; }
+.clock {
+  width: 35%;
+  height: 400px; }
 
 .menu {
-  width: 200px;
+  width: 15%;
   height: 400px;
   padding-top: 3%; }
 
@@ -57,7 +57,8 @@ body {
 
 .cycles {
   border-bottom: 2px solid #EDEDED;
-  margin-bottom: 3%; }
+  margin-bottom: 3%;
+  margin-top: 5%; }
 
 .tabatas {
   border-bottom: 2px solid #EDEDED;
@@ -98,7 +99,6 @@ input.key-numbers--extra::-webkit-outer-spin-button {
   padding-top: 3%; }
 
 .button {
-  background-color: #EDEDED;
   display: inline-block;
   height: 40px;
   width: 26%;
@@ -107,7 +107,14 @@ input.key-numbers--extra::-webkit-outer-spin-button {
 .button:hover {
   background-color: #E2E2E2; }
 
-.button-image {
-  display: block;
-  margin: auto;
-  margin-top: 14%; }
+.button-image--play {
+  background: url("../img/play.svg") no-repeat center;
+  background-color: #EDEDED; }
+
+.button-image--pause {
+  background: url("../img/pause.svg") no-repeat center;
+  background-color: #EDEDED; }
+
+.button-image--reset {
+  background: url("../img/repeat.svg") no-repeat center;
+  background-color: #EDEDED; }

@@ -5,15 +5,15 @@
 	display : flex;
 	justify-content: center;
 	margin-top: 10%;
+	max-width: 1600px;
 }
-.vizualization {
-	width: 400px;
+.clock {
+	width: 35%;
 	height: 400px;
-	background-color: #777777;
 }
 
 .menu {
-	width: 200px;
+	width: 15%;
 	height: 400px;
 	padding-top: 3%;
 }
