@@ -5,6 +5,9 @@
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
@@ -75,7 +78,9 @@ input.key-numbers {
   border: 0;
   text-align: center; }
 
-input.key-numbers::-webkit-inner-spin-button,
+input.key-numbers::-webkit-inner-spin-button {
+  opacity: 1; }
+
 input.key-numbers::-webkit-outer-spin-button {
   opacity: 1; }
 
@@ -85,7 +90,9 @@ input.key-numbers--extra {
   border: 0;
   text-align: center; }
 
-input.key-numbers--extra::-webkit-inner-spin-button,
+input.key-numbers--extra::-webkit-inner-spin-button {
+  opacity: 1; }
+
 input.key-numbers--extra::-webkit-outer-spin-button {
   opacity: 1; }
 

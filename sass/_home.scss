@@ -39,10 +39,14 @@ input.key-numbers {
   text-align: center;
 }
 
-input.key-numbers::-webkit-inner-spin-button, 
+input.key-numbers::-webkit-inner-spin-button {
+	opacity: 1;
+} 
 input.key-numbers::-webkit-outer-spin-button {  
-  opacity: 1;
+	opacity: 1;
 }
+
+
 
 input.key-numbers--extra {
   float: right;
@@ -51,9 +55,12 @@ input.key-numbers--extra {
   text-align: center;
 }
 
-input.key-numbers--extra::-webkit-inner-spin-button, 
+
+input.key-numbers--extra::-webkit-inner-spin-button {
+	opacity: 1;
+} 
 input.key-numbers--extra::-webkit-outer-spin-button {  
-  opacity: 1;
+    opacity: 1;
 }
 
 
@@ -61,32 +68,3 @@ input.key-numbers--extra::-webkit-outer-spin-button {
 
 
 
-.buttons {
-	display : flex;
-	justify-content: space-between;
-	padding-top: 3%;
-}
-	.button {
-		display: inline-block;
-		height: 40px;
-		width: 26%;
-		border-radius: 50%;
-	}
-
-	.button:hover {
-		background-color: $color-gray--ligh;
-
-	}
-
-		.button-image--play {
-		  background: url("../img/play.svg") no-repeat center;
-		  background-color: $color-gray;
-		}
-		.button-image--pause {
-		  background: url("../img/pause.svg") no-repeat center;
-		  background-color: $color-gray;
-		}
-		.button-image--reset {
-		  background: url("../img/repeat.svg") no-repeat center;
-		  background-color: $color-gray;
-		}
