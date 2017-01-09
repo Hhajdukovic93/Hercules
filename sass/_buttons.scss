@@ -1,0 +1,29 @@
+.buttons {
+	display : flex;
+	justify-content: space-between;
+	padding-top: 3%;
+}
+	.button {
+		display: inline-block;
+		height: 40px;
+		width: 26%;
+		border-radius: 50%;
+	}
+
+	.button:hover {
+		background-color: $color-gray--ligh;
+
+	}
+
+		.button-image--play {
+		  background: url("../img/play.svg") no-repeat center;
+		  background-color: $color-gray;
+		}
+		.button-image--pause {
+		  background: url("../img/pause.svg") no-repeat center;
+		  background-color: $color-gray;
+		}
+		.button-image--reset {
+		  background: url("../img/repeat.svg") no-repeat center;
+		  background-color: $color-gray;
+		}
