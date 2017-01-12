@@ -1,34 +1,36 @@
 .prepare {
 	border-bottom: 2px solid $color-prepare;
-	margin-bottom: 3%;
+	margin-bottom: 9%;
+	padding: 0;
 }
 
 .work {
 	border-bottom: 2px solid $color-work;
-	margin-bottom: 3%;
+	margin-bottom: 9%;
 }
 
 .rest {
 	border-bottom: 2px solid $color-rest;
-	margin-bottom: 3%;
+	margin-bottom: 9%;
 }
 
 .cycles {
 	border-bottom: 2px solid $color-gray;
-	margin-bottom: 3%;
-	margin-top: 5%;
+	margin-bottom: 9%;
+	margin-top: 11%;
 }
 
 .tabatas {
 	border-bottom: 2px solid $color-gray;
-	margin-bottom: 3%;
+	margin-bottom: 9%;
 }
 
 
 .key-words {
   margin-left: 10px;
-  line-height: 28px;
+  line-height: 21px;
   vertical-align: middle;
+  margin-bottom: 0;
 }
 
 
@@ -37,10 +39,18 @@ input.key-numbers {
   clear: both;
   border: 0;
   text-align: center;
+
+  padding: 0;
 }
 
 input.key-numbers::-webkit-inner-spin-button {
-	opacity: 1;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 14px;
+  background: #eee;
+  background-repeat: no-repeat;
+  background-position: 95% 42%;
+  opacity: 1;
 } 
 input.key-numbers::-webkit-outer-spin-button {  
 	opacity: 1;
@@ -57,14 +67,42 @@ input.key-numbers--extra {
 
 
 input.key-numbers--extra::-webkit-inner-spin-button {
-	opacity: 1;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 14px;
+  background: #eee;
+  background-repeat: no-repeat;
+  background-position: 95% 42%;
+  opacity: 1;
 } 
 input.key-numbers--extra::-webkit-outer-spin-button {  
+
     opacity: 1;
+    background: #f00;
+
 }
 
 
 
+input.prepare-input::-webkit-inner-spin-button {
+  background: $color-prepare;
+} 
+
+input.work-input::-webkit-inner-spin-button {
+  background: $color-work;
+} 
+
+input.rest-input::-webkit-inner-spin-button {
+  background: $color-rest;
+} 
+
+input.cycles-input::-webkit-inner-spin-button {
+  background: $color-gray;
+} 
+
+input.tabtas-input::-webkit-inner-spin-button {
+  background: $color-gray;
+} 
 
 
 

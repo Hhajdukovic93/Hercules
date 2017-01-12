@@ -690,8 +690,8 @@ function CyclesArcDraw()
     console.log("Bojam : " + currentValue);
 
     arcTimer = d3.arc()
-      .innerRadius(25)
-      .outerRadius(35)
+      .innerRadius(25.5)
+      .outerRadius(34.5)
       .startAngle(1 * (pi/180)) //converting from degs to radians
       // MAX -  6.30(2*PI) 
       // MIN -  0
