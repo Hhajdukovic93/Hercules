@@ -47,7 +47,7 @@ input.key-numbers::-webkit-inner-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
   width: 14px;
-  background: #eee;
+  background: #eee url('http://i.stack.imgur.com/YYySO.png') no-repeat 50% 50%;
   background-repeat: no-repeat;
   background-position: 95% 42%;
   opacity: 1;
@@ -76,10 +76,7 @@ input.key-numbers--extra::-webkit-inner-spin-button {
   opacity: 1;
 } 
 input.key-numbers--extra::-webkit-outer-spin-button {  
-
     opacity: 1;
-    background: #f00;
-
 }
 
 

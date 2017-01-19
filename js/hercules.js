@@ -178,6 +178,10 @@ function Setup()
         .attr("font-size", "14px")
         .attr("fill", "black")
         .attr("id", "tabatasTimerDisplay");
+
+    // Create music objects for sounds
+    WorkBeep();
+    RestBeep();     
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -192,20 +196,20 @@ function Play()
     {
         if(workModeIsActive)
         {
+            workValue++;
             Work();
             console.log("Nastavljen u WORK");
         }
         else if(restModeIsActive)
         {
+            restValue++;
             Rest();
             console.log("Nastavljen u REST");
         }
         else // prepareModeIsActive
         { 
             Prepare();
-            console.log("Nastavljen u PREPARE");
-
-            
+            console.log("Nastavljen u PREPARE"); 
         }
     }
     else
@@ -226,6 +230,7 @@ function Play()
           //  CYCLES user input
           cyclesValue = document.getElementById("cycles").value;
           topCyclesValue = cyclesValue;
+          // Importan counter for right naumber display
           cyclesCounter = topCyclesValue;
 
           //  TABATAS user input
@@ -234,6 +239,8 @@ function Play()
 
           Prepare(); 
     }
+
+
 }
 // -------------------------------------------------------------------------------------- //
 
@@ -246,32 +253,34 @@ function Prepare()
 {
     console.log("PREPARE sam");
 
-    d3.select("#mainTitle")
-      .attr("x", "151")
-      .text("PREPARE");
-    d3.select("#mainTimerDisplay").text(topPrepareValue);
-    d3.select("#cyclesTimerDisplay").text(topCyclesValue);
-    d3.select("#tabatasTimerDisplay").text(topTabatasValue);
+    if(pauseIsOn)
+    {
+      d3.select("#mainTimerDisplay").text(prepareValue);
+    }
 
+    else
+    {
+      // Write display for PREPARE mode
+      PrepareBasicDisplay();
+    }
+
+    // Set modes status
     prepareModeIsActive = true;
     workModeIsActive = false;
     restModeIsActive = false;
 
-    //  Turn counter, when is zero, terminate PREPARE mode
-    prepareCounter = topPrepareValue;
+    pauseIsOn = false;
 
     // Start execution loop (one turn) defined by user
     prepareInterval = setInterval(PrepareCalcute, 1000);
     prepareColoringInterval = setInterval(arcTimerPrepare, 1001);
-
-    pauseIsOn = false;
 }
 
 // ------------------------------------------------------------------------------------- //
 
 function PrepareCalcute()
 {
-    if(prepareCounter<1)
+    if(prepareValue<1)
     { 
         d3.select("#mainTimerDisplay").text(topWorkValue);
         Reset();
@@ -280,14 +289,24 @@ function PrepareCalcute()
     else
     {
       prepareValue--;
+      console.log("Value(P) : " + prepareValue);
       d3.select("#mainTimerDisplay").text(prepareValue);
       var scale = d3.scaleLinear() 
         .domain([0,topPrepareValue]) 
         .range([0,6.4]);
       var currentDistanceValue = topPrepareValue-prepareValue;
       currentTimerArcValue = scale(currentDistanceValue);
-      prepareCounter--;
     }
+}
+// ------------------------------------------------------------------------------------- //
+function PrepareBasicDisplay()
+{
+  d3.select("#mainTitle")
+    .attr("x", "151")
+    .text("PREPARE");
+  d3.select("#mainTimerDisplay").text(topPrepareValue);
+  d3.select("#cyclesTimerDisplay").text(topCyclesValue);
+  d3.select("#tabatasTimerDisplay").text(topTabatasValue);
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -300,32 +319,26 @@ function Work()
 { 
     console.log("WORK sam");
 
-    d3.select("#mainTitle")
-      .attr("x", "167")
-      .text("WORK");
-    d3.select("#mainTimerDisplay").text(topWorkValue);
-    d3.select("#cyclesTimerDisplay").text(cyclesCounter);
-
-    console.log("P V : " + workValue);
-
-    pauseIsOn = false;
+    if(pauseIsOn)
+    {
+      d3.select("#mainTimerDisplay").text(workValue);
+    }
+    else
+    {
+      WorkBasicDisplay();
+    } 
 
     prepareModeIsActive = false;
     workModeIsActive = true;
     restModeIsActive = false;
-
-    // Refresh decresed value
-    workValue = topWorkValue;
-
-    //  Turn counter, when is zero, terminate PREPARE mode
-    workCounter = topWorkValue;
 
     // Start execution loop (one turn) defined by user
     WorkCalcute();
     arcTimerWork();
 
     workInterval = setInterval(WorkCalcute, 1000);
-    workColoringInterval = setInterval(arcTimerWork, 1001);   
+    workColoringInterval = setInterval(arcTimerWork, 1001);  
+
 
     // In first step REST music is not defined, after that we can stop it
     if(soundSecondTurnCheacker)
@@ -333,46 +346,57 @@ function Work()
       // Stop REST sound
       restBeepSound.pause();
     }
-    // Start WORK sound
-    WorkBeep(); 
+
+    if(pauseIsOn)
+    {
+      // Do nothing, without start sound
+    }  
+    else
+    {
+      // Start WORK sound
+      //WorkBeep(); 
+      workBeepSound.play();
+    }
+
+
+    pauseIsOn = false;
+
 }
+
+// ------------------------------------------------------------------------------------- //
+
 function WorkCalcute()
 {
 
-   if(workCounter<1)
+   if(workValue<1)
     {
+        workValue = topWorkValue;
         Reset();
         Rest();
     }
     else
     {
-      var top = topWorkValue;
       workValue--;
+      console.log("Value(W) : " + workValue);
       d3.select("#mainTimerDisplay").text(workValue);
       var skala = d3.scaleLinear() 
-        .domain([0,top]) 
+        .domain([0,topWorkValue]) 
         .range([0,6.4]);
-      var opa = top-workValue;
-      currentTimerArcValue = skala(opa);
-      console.log("Top value:" + top);
-      workCounter--;
+      currentTimerArcValue = skala(topWorkValue-workValue);
     }
 }
 // ---------------------------------------------------------------------------------- //
 
+function WorkBasicDisplay()
+{
+  d3.select("#mainTitle")
+    .attr("x", "167")
+    .text("WORK");
+  d3.select("#mainTimerDisplay").text(topWorkValue);
+  d3.select("#cyclesTimerDisplay").text(cyclesCounter);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
+// ---------------------------------------------------------------------------------- //
 
 
 
@@ -381,36 +405,26 @@ function WorkCalcute()
 // ---------------------------    REST MODE METHOD -------------------------------------- //
 function Rest()
 {
-    cyclesCounter--;
-
     console.log("REST sam");
-
-    d3.select("#mainTitle")
-      .attr("x", "171")
-      .text("REST");
-    d3.select("#mainTimerDisplay").text(topRestValue);
-    d3.select("#cyclesTimerDisplay").text(cyclesCounter);
-
-    console.log("P V : " + restValue);
-
-    pauseIsOn = false;
-    
-    CyclesCalculate();
-    CyclesArcDraw();
-
     prepareModeIsActive = false;
     workModeIsActive = false;
     restModeIsActive = true;
 
-    // Refresh decresed value
-    restValue = topRestValue;
+    d3.select("#mainTimerDisplay").text(restValue);
 
-    //  Turn counter, when is zero, terminate PREPARE mode
-    restCounter = topRestValue;
+
+    RestBasicDisplay();
+
+    if(!pauseIsOn)
+    {
+      CyclesCalculate();
+      CyclesArcDraw();
+    }
 
     // Start execution loop (one turn) defined by user
     RestCalcute();
-    arcTimerRest();
+    arcTimerRest();     
+
 
     restInterval = setInterval(RestCalcute, 1000);
     restColoringInterval = setInterval(arcTimerRest, 1001);   
@@ -421,13 +435,27 @@ function Rest()
     // Stop WORK sound
     workBeepSound.pause();
 
-    // Start REST sound
-    RestBeep();
+    if(pauseIsOn)
+    {
+      // Do nothing, without start sound
+    }  
+    else
+    {
+      // Start WORK sound
+      //RestBeep(); 
+      restBeepSound.play();
+    }
+
+
+    pauseIsOn = false;
+
 }
+// ---------------------------------------------------------------------------------- //
+
 function RestCalcute()
 {
 
-    if(restCounter<1)
+    if(restValue<1)
     {
         if(cyclesCounter<1)
         {
@@ -439,22 +467,31 @@ function RestCalcute()
           Reset();
           Work();
         }
+        restValue = topRestValue;
     }
     else
     {
-      var top = topRestValue;
       restValue--;
+      console.log("Value(R) : " + restValue);
       d3.select("#mainTimerDisplay").text(restValue);
       var skala = d3.scaleLinear() 
-        .domain([0,top]) 
+        .domain([0,topRestValue]) 
         .range([0,6.4]);
-      var opa = top-restValue;
-      currentTimerArcValue = skala(opa);
-      console.log("Top value:" + top);
-      restCounter--;
+      currentTimerArcValue = skala(topRestValue-restValue);
     }
 }
 // ---------------------------------------------------------------------------------- //
+
+function RestBasicDisplay()
+{
+  d3.select("#mainTitle")
+    .attr("x", "171")
+    .text("REST");
+  d3.select("#mainTimerDisplay").text(topRestValue);
+  d3.select("#cyclesTimerDisplay").text(--cyclesCounter);
+}
+// ---------------------------------------------------------------------------------- //
+
 function GameOver()
 {
   restBeepSound.pause();
@@ -465,115 +502,6 @@ function GameOver()
   d3.select("#mainTitle")
   .attr("x", "147")
   .text("HERCULES");
-}
-// ---------------------------------------------------------------------------------- //
-
-
-
-
-
-// ------------------------    PAUSE   METHODS  ------------------------------------ //
-function Pause()
-{
-  pauseIsOn = true;
-  if(workModeIsActive)
-  {
-      clearInterval(workInterval);
-      clearInterval(workColoringInterval);
-      workBeepSound.pause();
-      console.log("Pauziran u WORK");
-  }
-  else if(restModeIsActive)
-  {
-      cyclesCounter++;
-      clearInterval(restInterval);
-      clearInterval(restColoringInterval);
-      restBeepSound.pause();
-      console.log("Pauziran u REST");
-  }
-  else // prepareModeIsActive
-  { 
-      clearInterval(prepareInterval);
-      clearInterval(prepareColoringInterval);
-      console.log("Pauziran u PREPARE");
-  }
-}
-// ---------------------------------------------------------------------------------- //
-
-
-
-
-
-// ------------------------    RESET   METHODS  ------------------------------------ //
-function Reset()
-{   
-  pauseIsOn = false;
-  d3.select("#mainTimerDisplay").text("0");
-  // Sound methods, turn off
-  if(workModeIsActive)
-  {
-      workBeepSound.pause();
-      console.log("Reset in workMode");
-  }
-  else if(restModeIsActive)
-  {
-      restBeepSound.pause();
-      console.log("Reset in restMode");
-  }
-  else
-  {
-    console.log("Reset in prepareMode");
-  }
-
-    // Timer cycle
-    arcTimer = d3.arc()
-      .innerRadius(169)
-      .outerRadius(181)
-      .startAngle(1 * (pi/180)) //converting from degs to radians
-      // MAX -  6.30(2*PI) 
-      // MIN -  0
-      .endAngle(6.3) //just radians
-
-    svg.append("path")
-      .attr("d", arcTimer)
-      .attr("fill", "lightgray")
-      .attr("transform", "translate(200,190)");
-// ---------------------------------------------------------------------------------- //
-
-    clearInterval(prepareInterval);
-    clearInterval(prepareColoringInterval);
-
-    clearInterval(workInterval);
-    clearInterval(workColoringInterval);
-
-    clearInterval(restInterval);
-    clearInterval(restColoringInterval);
-}
-// ---------------------------------------------------------------------------------- //
-function UserReset()
-{  
-  Reset();
-  ResetCycles(); 
-}
-// ---------------------------------------------------------------------------------- //
-function ResetCycles()
-{   
-    // Cycles cycle
-    arcTimer = d3.arc()
-      .innerRadius(25)
-      .outerRadius(35)
-      .startAngle(1 * (pi/180)) //converting from degs to radians
-      // MAX -  6.30(2*PI) 
-      // MIN -  0
-      .endAngle(6.3) //just radians
-
-    svg.append("path")
-      .attr("d", arcTimer)
-      .attr("fill", "lightgray")
-      .attr("transform", "translate(150,270)");
-
-    clearInterval(cyclesInterval);
-    clearInterval(cyclesColoringInterval);
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -708,19 +636,124 @@ function CyclesArcDraw()
 
 
 
+// ------------------------    PAUSE   METHODS  ------------------------------------ //
+function Pause()
+{
+  pauseIsOn = true;
+  if(workModeIsActive)
+  {
+      clearInterval(workInterval);
+      clearInterval(workColoringInterval);
+      workBeepSound.pause();
+      console.log("Pauziran u WORK");
+  }
+  else if(restModeIsActive)
+  {
+      cyclesCounter++;
+      clearInterval(restInterval);
+      clearInterval(restColoringInterval);
+      restBeepSound.pause();
+      console.log("Pauziran u REST");
+  }
+  else // prepareModeIsActive
+  { 
+      clearInterval(prepareInterval);
+      clearInterval(prepareColoringInterval);
+      console.log("Pauziran u PREPARE");
+  }
+}
+// ---------------------------------------------------------------------------------- //
+
+
+
+
+
+// ------------------------    RESET   METHODS  ------------------------------------ //
+function Reset()
+{   
+  pauseIsOn = false;
+  d3.select("#mainTimerDisplay").text("0");
+  // Sound methods, turn off
+  if(workModeIsActive)
+  {
+      workBeepSound.pause();
+      console.log("Reset in workMode");
+  }
+  else if(restModeIsActive)
+  {
+      restBeepSound.pause();
+      console.log("Reset in restMode");
+  }
+  else
+  {
+    console.log("Reset in prepareMode");
+  }
+
+    // Timer cycle
+    arcTimer = d3.arc()
+      .innerRadius(169)
+      .outerRadius(181)
+      .startAngle(1 * (pi/180)) //converting from degs to radians
+      // MAX -  6.30(2*PI) 
+      // MIN -  0
+      .endAngle(6.3) //just radians
+
+    svg.append("path")
+      .attr("d", arcTimer)
+      .attr("fill", "lightgray")
+      .attr("transform", "translate(200,190)");
+// ---------------------------------------------------------------------------------- //
+
+    clearInterval(prepareInterval);
+    clearInterval(prepareColoringInterval);
+
+    clearInterval(workInterval);
+    clearInterval(workColoringInterval);
+
+    clearInterval(restInterval);
+    clearInterval(restColoringInterval);
+}
+// ---------------------------------------------------------------------------------- //
+function UserReset()
+{  
+  Reset();
+  ResetCycles(); 
+}
+// ---------------------------------------------------------------------------------- //
+function ResetCycles()
+{   
+    // Cycles cycle
+    arcTimer = d3.arc()
+      .innerRadius(25)
+      .outerRadius(35)
+      .startAngle(1 * (pi/180)) //converting from degs to radians
+      // MAX -  6.30(2*PI) 
+      // MIN -  0
+      .endAngle(6.3) //just radians
+
+    svg.append("path")
+      .attr("d", arcTimer)
+      .attr("fill", "lightgray")
+      .attr("transform", "translate(150,270)");
+
+    clearInterval(cyclesInterval);
+    clearInterval(cyclesColoringInterval);
+}
+// ---------------------------------------------------------------------------------- //
+
+
+
+
+
 // ------------------------------  SOUND METHODS  ----------------------------------- //
 function WorkBeep() 
-{
-    //var snd = new Audio("data:audio/wav;base64,//uQRAA");  
-    workBeepSound = new Audio("../sounds/workSound.mp3"); 
-    workBeepSound.play();
+{  
+    workBeepSound = new Audio("sounds/workSound.mp3"); 
 }
 
 function RestBeep() 
 {
-    //var snd = new Audio("data:audio/wav;base64,//uQRAA");  
-    restBeepSound = new Audio("../sounds/restSound.mp3"); 
-    restBeepSound.play();
+    restBeepSound = new Audio("sounds/restSound.mp3"); 
 }
 // ---------------------------------------------------------------------------------- //
 
