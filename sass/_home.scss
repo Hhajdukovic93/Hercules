@@ -1,3 +1,13 @@
+/* This comment is
+ * more than one line long
+ * since it uses the CSS comment syntax,
+ * it will appear in the CSS output. */
+
+
+// These comments are in single line
+// They will not appear in the CSS output,
+// since they use the single-line comment syntax.
+
 .prepare {
 	border-bottom: 2px solid $color-prepare;
 	margin-bottom: 9%;
@@ -39,9 +49,9 @@ input.key-numbers {
   clear: both;
   border: 0;
   text-align: center;
-
   padding: 0;
 }
+
 
 input.key-numbers::-webkit-inner-spin-button {
   -webkit-appearance: none;

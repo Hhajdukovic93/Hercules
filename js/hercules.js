@@ -61,6 +61,7 @@ var workBeepSound;
 var restBeepSound;
 
 // -------------------------------- BOOLEAN   --------------------------------------------- //
+var playIsActive = false;
 
 var prepareModeIsActive = false;
 var workModeIsActive = false;
@@ -192,6 +193,10 @@ function Setup()
 // --------------------------  PLAY  METHOD   ---------------------------------------- //
 function Play()
 {
+  if(!playIsActive || pauseIsOn)
+  {
+    playIsActive = true;
+
     if(pauseIsOn)
     {
         if(workModeIsActive)
@@ -239,8 +244,7 @@ function Play()
 
           Prepare(); 
     }
-
-
+  }
 }
 // -------------------------------------------------------------------------------------- //
 
@@ -257,7 +261,6 @@ function Prepare()
     {
       d3.select("#mainTimerDisplay").text(prepareValue);
     }
-
     else
     {
       // Write display for PREPARE mode
@@ -347,14 +350,9 @@ function Work()
       restBeepSound.pause();
     }
 
-    if(pauseIsOn)
-    {
-      // Do nothing, without start sound
-    }  
-    else
+    if(!pauseIsOn)
     {
       // Start WORK sound
-      //WorkBeep(); 
       workBeepSound.play();
     }
 
@@ -367,8 +365,7 @@ function Work()
 
 function WorkCalcute()
 {
-
-   if(workValue<1)
+    if(workValue<1)
     {
         workValue = topWorkValue;
         Reset();
@@ -406,12 +403,12 @@ function WorkBasicDisplay()
 function Rest()
 {
     console.log("REST sam");
+
     prepareModeIsActive = false;
     workModeIsActive = false;
     restModeIsActive = true;
 
     d3.select("#mainTimerDisplay").text(restValue);
-
 
     RestBasicDisplay();
 
@@ -425,7 +422,6 @@ function Rest()
     RestCalcute();
     arcTimerRest();     
 
-
     restInterval = setInterval(RestCalcute, 1000);
     restColoringInterval = setInterval(arcTimerRest, 1001);   
 
@@ -435,26 +431,18 @@ function Rest()
     // Stop WORK sound
     workBeepSound.pause();
 
-    if(pauseIsOn)
-    {
-      // Do nothing, without start sound
-    }  
-    else
+    if(!pauseIsOn)
     {
       // Start WORK sound
-      //RestBeep(); 
       restBeepSound.play();
     }
 
-
     pauseIsOn = false;
-
 }
 // ---------------------------------------------------------------------------------- //
 
 function RestCalcute()
 {
-
     if(restValue<1)
     {
         if(cyclesCounter<1)
@@ -530,6 +518,7 @@ function arcTimerPrepare()
       .attr("fill", "#D8FF1A")
       .attr("transform", "translate(200,190)");
 }
+// ---------------------------------------------------------------------------------- //
 
 function arcTimerWork()
 {
@@ -552,6 +541,7 @@ function arcTimerWork()
       .attr("transform", "translate(200,190)");
 
 }
+// ---------------------------------------------------------------------------------- //
 
 function arcTimerRest()
 {
@@ -574,6 +564,7 @@ function arcTimerRest()
       .attr("transform", "translate(200,190)");
 }
 // ---------------------------------------------------------------------------------- //
+
 function checkCircleEnd()
 {
   if(currentTimerArcValue > 6.7)
@@ -599,6 +590,9 @@ function checkCircleEnd()
 // ---------------------------------------------------------------------------------- //
 
 
+
+
+
 // ----------------------      CYCLES  VIZUALIZATION  ------------------------------- //
 function CyclesCalculate()
 {
@@ -609,10 +603,10 @@ function CyclesCalculate()
     var currentDistanceValue = topCyclesValue-cyclesValue;
     currentCyclesArcValue = scale(currentDistanceValue);
 }
+// ---------------------------------------------------------------------------------- //
 
 function CyclesArcDraw()
 {
-    //checkCycleEnd();
     var currentValue = currentCyclesArcValue;
 
     console.log("Bojam : " + currentValue);
@@ -689,37 +683,38 @@ function Reset()
     console.log("Reset in prepareMode");
   }
 
-    // Timer cycle
-    arcTimer = d3.arc()
-      .innerRadius(169)
-      .outerRadius(181)
-      .startAngle(1 * (pi/180)) //converting from degs to radians
-      // MAX -  6.30(2*PI) 
-      // MIN -  0
-      .endAngle(6.3) //just radians
+  // Timer cycle
+  arcTimer = d3.arc()
+    .innerRadius(169)
+    .outerRadius(181)
+    .startAngle(1 * (pi/180)) //converting from degs to radians
+    // MAX -  6.30(2*PI) 
+    // MIN -  0
+    .endAngle(6.3) //just radians
 
-    svg.append("path")
-      .attr("d", arcTimer)
-      .attr("fill", "lightgray")
-      .attr("transform", "translate(200,190)");
-// ---------------------------------------------------------------------------------- //
+  svg.append("path")
+    .attr("d", arcTimer)
+    .attr("fill", "lightgray")
+    .attr("transform", "translate(200,190)");
 
-    clearInterval(prepareInterval);
-    clearInterval(prepareColoringInterval);
+  clearInterval(prepareInterval);
+  clearInterval(prepareColoringInterval);
 
-    clearInterval(workInterval);
-    clearInterval(workColoringInterval);
+  clearInterval(workInterval);
+  clearInterval(workColoringInterval);
 
-    clearInterval(restInterval);
-    clearInterval(restColoringInterval);
+  clearInterval(restInterval);
+  clearInterval(restColoringInterval);
 }
 // ---------------------------------------------------------------------------------- //
+
 function UserReset()
 {  
   Reset();
   ResetCycles(); 
 }
 // ---------------------------------------------------------------------------------- //
+
 function ResetCycles()
 {   
     // Cycles cycle
