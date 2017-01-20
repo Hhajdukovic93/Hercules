@@ -73,6 +73,10 @@ var pauseIsOn = false;
 
 // ------------------------------------------------------------------------------------- //
 
+var playButton;
+var pauseButton;
+var resetButton;
+
 
 
 
@@ -83,6 +87,30 @@ var pauseIsOn = false;
 // --------------------------  SETUP  METHOD   ---------------------------------------- //
 function Setup() 
 {
+// ---------------------------  BUTTONS LISTENER  -------------------------------------- // 
+  playButton = document.getElementById("js-play");
+  playButton.addEventListener("click", function onclick(event) 
+  {
+    Play();
+    event.preventDefault();
+  }
+  );
+
+  pauseButton = document.getElementById("js-pause");
+  pauseButton.addEventListener("click", function onclick(event) 
+  {
+    Pause();
+    event.preventDefault();
+  }
+  );
+
+  resetButton = document.getElementById("js-reset");
+  resetButton.addEventListener("click", function onclick(event) 
+  {
+    UserReset();
+    event.preventDefault();
+  }
+  );
 // ---------------------------  GRAPHICS  --------------------------------------------- //  
     //  SVG area
     svg = d3.select("#js-clock")
@@ -283,6 +311,7 @@ function Prepare()
 
 function PrepareCalcute()
 {
+    correctPositionDisplay();
     if(prepareValue<1)
     { 
         d3.select("#mainTimerDisplay").text(topWorkValue);
@@ -303,16 +332,22 @@ function PrepareCalcute()
 }
 // ------------------------------------------------------------------------------------- //
 function PrepareBasicDisplay()
-{
-  d3.select("#mainTitle")
+{ 
+    d3.select("#mainTitle")
     .attr("x", "151")
     .text("PREPARE");
   d3.select("#mainTimerDisplay").text(topPrepareValue);
+  if(prepareValue>9)
+  {
+    d3.select("#mainTimerDisplay")
+        .attr("x", "145")
+        .attr("y", "189");
+  }
   d3.select("#cyclesTimerDisplay").text(topCyclesValue);
   d3.select("#tabatasTimerDisplay").text(topTabatasValue);
 }
 // ---------------------------------------------------------------------------------- //
-
+ 
 
 
 
@@ -365,6 +400,7 @@ function Work()
 
 function WorkCalcute()
 {
+    correctPositionDisplay();
     if(workValue<1)
     {
         workValue = topWorkValue;
@@ -386,6 +422,7 @@ function WorkCalcute()
 
 function WorkBasicDisplay()
 {
+  correctPositionDisplay();
   d3.select("#mainTitle")
     .attr("x", "167")
     .text("WORK");
@@ -443,6 +480,7 @@ function Rest()
 
 function RestCalcute()
 {
+    correctPositionDisplay();
     if(restValue<1)
     {
         if(cyclesCounter<1)
@@ -472,6 +510,7 @@ function RestCalcute()
 
 function RestBasicDisplay()
 {
+  correctPositionDisplay();
   d3.select("#mainTitle")
     .attr("x", "171")
     .text("REST");
@@ -493,6 +532,57 @@ function GameOver()
 }
 // ---------------------------------------------------------------------------------- //
 
+function correctPositionDisplay()
+{
+  if(prepareModeIsActive)
+  {
+    if(prepareValue>10)
+    {
+      d3.select("#mainTimerDisplay")
+          .attr("x", "145")
+          .attr("y", "189");
+    }
+    else
+    {
+      d3.select("#mainTimerDisplay")
+          .attr("x", "172")
+          .attr("y", "189");
+    }
+  }
+
+  if(workModeIsActive)
+  {
+    if((workValue>10))
+    {
+      d3.select("#mainTimerDisplay")
+          .attr("x", "145")
+          .attr("y", "189");
+    }
+    else
+    {
+      d3.select("#mainTimerDisplay")
+          .attr("x", "172")
+          .attr("y", "189");
+    }
+  }
+
+  if(restModeIsActive)
+  {
+    if((restValue>10))
+    {
+      d3.select("#mainTimerDisplay")
+          .attr("x", "145")
+          .attr("y", "189");
+    }
+    else
+    {
+      d3.select("#mainTimerDisplay")
+          .attr("x", "172")
+          .attr("y", "189");
+    }
+  }
+}
+// ---------------------------------------------------------------------------------- //
 
 
 
@@ -666,7 +756,11 @@ function Pause()
 function Reset()
 {   
   pauseIsOn = false;
+  playIsActive = false;
   d3.select("#mainTimerDisplay").text("0");
+  d3.select("#mainTimerDisplay")
+          .attr("x", "172")
+          .attr("y", "189");
   // Sound methods, turn off
   if(workModeIsActive)
   {
