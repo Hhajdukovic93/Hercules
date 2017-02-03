@@ -223,55 +223,55 @@ function Play()
 {
   if(!playIsActive || pauseIsOn)
   {
-    playIsActive = true;
+      playIsActive = true;
 
-    if(pauseIsOn)
-    {
-        if(workModeIsActive)
-        {
-            workValue++;
-            Work();
-            console.log("Nastavljen u WORK");
-        }
-        else if(restModeIsActive)
-        {
-            restValue++;
-            Rest();
-            console.log("Nastavljen u REST");
-        }
-        else // prepareModeIsActive
-        { 
-            Prepare();
-            console.log("Nastavljen u PREPARE"); 
-        }
-    }
-    else
-    {
-          //  PREPARE MODE - user input
-          prepareValue = document.getElementById("prepare").value;
-          topPrepareValue = prepareValue;
+      if(pauseIsOn)
+      {
+          if(workModeIsActive)
+          {
+              workValue++;
+              Work();
+              console.log("Nastavljen u WORK");
+          }
+          else if(restModeIsActive)
+          {
+              restValue++;
+              Rest();
+              console.log("Nastavljen u REST");
+          }
+          else // prepareModeIsActive
+          { 
+              Prepare();
+              console.log("Nastavljen u PREPARE"); 
+          }
+      }
+      else
+      {
+            //  PREPARE MODE - user input
+            prepareValue = document.getElementById("prepare").value;
+            topPrepareValue = prepareValue;
 
-          //  WORK MODE  - user input
-          workValue = document.getElementById("work").value;
-          topWorkValue = workValue;
+            //  WORK MODE  - user input
+            workValue = document.getElementById("work").value;
+            topWorkValue = workValue;
 
 
-          //  REST MODE - user input
-          restValue = document.getElementById("rest").value;
-          topRestValue = restValue;
+            //  REST MODE - user input
+            restValue = document.getElementById("rest").value;
+            topRestValue = restValue;
 
-          //  CYCLES user input
-          cyclesValue = document.getElementById("cycles").value;
-          topCyclesValue = cyclesValue;
-          // Importan counter for right naumber display
-          cyclesCounter = topCyclesValue;
+            //  CYCLES user input
+            cyclesValue = document.getElementById("cycles").value;
+            topCyclesValue = cyclesValue;
+            // Importan counter for right naumber display
+            cyclesCounter = topCyclesValue;
 
-          //  TABATAS user input
-          tabatasValue = document.getElementById("tabatas").value;
-          topTabatasValue = tabatasValue;
+            //  TABATAS user input
+            tabatasValue = document.getElementById("tabatas").value;
+            topTabatasValue = tabatasValue;
 
-          Prepare(); 
-    }
+            Prepare(); 
+      }
   }
 }
 // -------------------------------------------------------------------------------------- //
@@ -391,7 +391,7 @@ function Work()
       workBeepSound.play();
     }
 
-
+    playIsActive = true;
     pauseIsOn = false;
 
 }
@@ -474,6 +474,7 @@ function Rest()
       restBeepSound.play();
     }
 
+    playIsActive = true;
     pauseIsOn = false;
 }
 // ---------------------------------------------------------------------------------- //
