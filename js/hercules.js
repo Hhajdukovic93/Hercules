@@ -118,15 +118,21 @@ function Setup()
       .attr("width", width)
       .attr("height", height);
 
+
     //  Timer circle
     svg.append("circle")
+      //  X,Y coordintates
       .attr("cx","200")
       .attr("cy","190")
+      //  Circle radius
       .attr("r","175")
+      //  Circle colors
       .style("stroke","lightgray")
-      .style("stroke-width","8")
-      .style("fill","white");
-                        
+      .style("fill","white")
+      //  Circle width
+      .style("stroke-width","16"); //    CHANGED TO 16 from 8
+                  
+
     // Cycle circle
     svg.append("circle")
       .attr("cx","150")
@@ -592,7 +598,12 @@ function correctPositionDisplay()
 
 
 
-// ----------------------    VIZUALIZATION METHODS   -------------------------------- //
+
+
+/*  ------------------------------------------------ *\
+*   VIZUALIZATION METHODS
+\*  ------------------------------------------------ */
+
 function arcTimerPrepare()
 {
     checkCircleEnd();
@@ -601,8 +612,8 @@ function arcTimerPrepare()
     console.log("Bojam : " + currentValue);
 
     arcTimer = d3.arc()
-      .innerRadius(170)
-      .outerRadius(180)
+      .innerRadius(167)  // Old 170
+      .outerRadius(183)  // Old 180
       .startAngle(1 * (pi/180)) //converting from degs to radians
       // MAX -  6.30(2*PI) 
       // MIN -  0
@@ -623,8 +634,8 @@ function arcTimerWork()
     console.log("Bojam : " + currentValue);
 
     arcTimer = d3.arc()
-      .innerRadius(170)
-      .outerRadius(180)
+      .innerRadius(167)
+      .outerRadius(183)
       .startAngle(1 * (pi/180)) //converting from degs to radians
       // MAX -  6.30(2*PI) 
       // MIN -  0
@@ -646,8 +657,8 @@ function arcTimerRest()
     console.log("Bojam : " + currentValue);
 
     arcTimer = d3.arc()
-      .innerRadius(170)
-      .outerRadius(180)
+      .innerRadius(167)
+      .outerRadius(183)
       .startAngle(1 * (pi/180)) //converting from degs to radians
       // MAX -  6.30(2*PI) 
       // MIN -  0
@@ -665,8 +676,8 @@ function checkCircleEnd()
   if(currentTimerArcValue > 6.7)
   {
     arcTimer = d3.arc()
-      .innerRadius(170)
-      .outerRadius(180)
+      .innerRadius(167)
+      .outerRadius(183)
       .startAngle(1 * (pi/180)) //converting from degs to radians
       // MAX -  6.30(2*PI) 
       // MIN -  0
@@ -784,8 +795,8 @@ function Reset()
 
   // Timer cycle
   arcTimer = d3.arc()
-    .innerRadius(169)
-    .outerRadius(181)
+    .innerRadius(166.5)  // old 169
+    .outerRadius(183.5)  // old 181
     .startAngle(1 * (pi/180)) //converting from degs to radians
     // MAX -  6.30(2*PI) 
     // MIN -  0
@@ -842,12 +853,12 @@ function ResetCycles()
 // ------------------------------  SOUND METHODS  ----------------------------------- //
 function WorkBeep() 
 {  
-    workBeepSound = new Audio("sounds/workSound.mp3"); 
+    workBeepSound = new Audio("sounds/buzzer.mp3"); 
 }
 
 function RestBeep() 
 {
-    restBeepSound = new Audio("sounds/restSound.mp3"); 
+    restBeepSound = new Audio("sounds/buzzer.mp3"); 
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -936,4 +947,13 @@ function DirectCheckPrepare(directValue)
     }
 }
 // ---------------------------------------------------------------------------------- //
-//  Add new parametar in fucntion which describe is it prepare proceed to check function
+function Countdown() {
+
+}
+// ---------------------------------------------------------------------------------- //
+function RandomCatSound() {
+  
+}
+// ---------------------------------------------------------------------------------- //
+
+//  Input check countdown

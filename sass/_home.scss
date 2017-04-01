@@ -8,6 +8,12 @@
 // They will not appear in the CSS output,
 // since they use the single-line comment syntax.
 
+.countdown {
+  border-bottom: 2px solid $color-black;
+  margin-bottom: 9%;
+  padding: 0;
+}
+
 .prepare {
 	border-bottom: 2px solid $color-prepare;
 	margin-bottom: 9%;
@@ -54,10 +60,7 @@ input.key-numbers {
 
 
 input.key-numbers::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   width: 14px;
-  
   background-repeat: no-repeat;
   background-position: 95% 42%;
   opacity: 1;
@@ -78,7 +81,6 @@ input.key-numbers--extra {
 
 input.key-numbers--extra::-webkit-inner-spin-button {
   width: 14px;
-  background: #eee;
   background-repeat: no-repeat;
   background-position: 95% 42%;
   opacity: 1;

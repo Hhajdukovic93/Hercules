@@ -3,15 +3,18 @@
 	max-width: 1600px;
 	margin: 0 auto;
 	padding: 0;
+
+
 }
   .row {
-  	  height: 100vh;
 	  display: flex;
       flex-direction: row;
 	  flex-wrap: wrap;
 
 	  justify-content: center;
-	  align-items: center;
+	  align-items: stretch;	
+
+	  margin-top: 5%;
 }
 	.main-wrapper {
 	  display: flex;
