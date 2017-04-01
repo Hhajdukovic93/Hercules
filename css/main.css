@@ -76,6 +76,10 @@ body {
   font-size: 85px;
   font-weight: 400; }
 
+/* This comment is
+ * more than one line long
+ * since it uses the CSS comment syntax,
+ * it will appear in the CSS output. */
 .prepare {
   border-bottom: 2px solid #D8FF1A;
   margin-bottom: 9%;
@@ -115,7 +119,6 @@ input.key-numbers::-webkit-inner-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
   width: 14px;
-  background: #eee url("http://i.stack.imgur.com/YYySO.png") no-repeat 50% 50%;
   background-repeat: no-repeat;
   background-position: 95% 42%;
   opacity: 1; }
@@ -130,8 +133,6 @@ input.key-numbers--extra {
   text-align: center; }
 
 input.key-numbers--extra::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
   width: 14px;
   background: #eee;
   background-repeat: no-repeat;

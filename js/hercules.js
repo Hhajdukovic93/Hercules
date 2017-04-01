@@ -270,7 +270,11 @@ function Play()
             tabatasValue = document.getElementById("tabatas").value;
             topTabatasValue = tabatasValue;
 
-            Prepare(); 
+            // in case where there is not PREPARE mode, HC version
+            if(prepareValue==0)
+              Work();
+            else
+              Prepare(); 
       }
   }
 }
@@ -857,7 +861,7 @@ function InputCheckPrepare()
   var checkValue = document.getElementById("prepare").value;
   var checkValueINT = parseInt(checkValue);
 
-  checkValue = DirectCheck(checkValueINT);
+  checkValue = DirectCheckPrepare(checkValueINT);
   document.getElementById("prepare").value = checkValue;
 }
 function InputCheckWork()
@@ -913,3 +917,23 @@ function DirectCheck(directValue)
     }
 }
 // ---------------------------------------------------------------------------------- //
+function DirectCheckPrepare(directValue)
+{
+    checkValueINT = directValue;
+    if (isNaN(checkValueINT)) 
+    {
+      alert("You have not entered a number. \n\n Please enter a number!");
+      return 4;
+    }
+    if ((checkValueINT < 0 ) || (checkValueINT > 300))
+    {
+      alert("Please enter number that can be used in this application. Thank you.");
+      return 4;
+    }
+    else 
+    {
+      return checkValueINT;
+    }
+}
+// ---------------------------------------------------------------------------------- //
+//  Add new parametar in fucntion which describe is it prepare proceed to check function
