@@ -1,6 +1,6 @@
-// ------------------------------------------------------------------------------------- //
-// --------------------------------  VARIABLES   --------------------------------------- //
-// ------------------------------------------------------------------------------------- //
+/*  ------------------------------------------------ *\
+*   VARIABLES
+\*  ------------------------------------------------ */
 
 // -------------------------------- BASIC SVG  ---------------------------------------- //
 var svg;
@@ -59,6 +59,7 @@ var cyclesCounter;
 
 var workBeepSound;
 var restBeepSound;
+var catBeepSound; // New one
 
 // -------------------------------- BOOLEAN   --------------------------------------------- //
 var playIsActive = false;
@@ -71,6 +72,9 @@ var secondTurnCycleBoolean = false;
 var soundSecondTurnCheacker = false;
 var pauseIsOn = false;
 
+//  Important for cat sound. 
+var iAmInSoundArray = false;
+
 // ------------------------------------------------------------------------------------- //
 
 var playButton;
@@ -79,12 +83,38 @@ var resetButton;
 
 
 
+//  ---------------------  Cat sound variables  ---------------------------------------- //
 
-// ------------------------------------------------------------------------------------- //
-// --------------------------------  METHODS   ----------------------------------------- //
-// ------------------------------------------------------------------------------------- //
 
-// --------------------------  SETUP  METHOD   ---------------------------------------- //
+// Do that in variables PART????
+//topCyclesValue = 4; // Extande this default value to all variables in this part, MAYBE!
+
+//  Maximal sound actions
+var mainSoundActionCounter;  // IN HC there is 8 sound actions
+
+//  Zero is first index in array and first beep in Hercules
+var endSoundsCounter = 0;
+
+//  Index is 1/4, not random but static with random time of showing
+var mjauINDEX = 0.25;   //   1/4
+
+//  Number of MJAU sound
+var maximalMjauSounds;
+
+
+// Array with all end actions number
+var endsFollowedBySound = []; 
+
+//  Array with mode end actions with MJAU sound
+var mrnjauSoundArray = [];
+
+
+
+
+/*  ------------------------------------------------ *\
+*   SETUP METHODS
+\*  ------------------------------------------------ */
+
 function Setup() 
 {
 // ---------------------------  BUTTONS LISTENER  -------------------------------------- // 
@@ -216,7 +246,8 @@ function Setup()
 
     // Create music objects for sounds
     WorkBeep();
-    RestBeep();     
+    RestBeep();   
+    CatBeep();  
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -227,6 +258,7 @@ function Setup()
 // --------------------------  PLAY  METHOD   ---------------------------------------- //
 function Play()
 {
+  //  Play or continue depending od boolean variables, Play button double nature
   if(!playIsActive || pauseIsOn)
   {
       playIsActive = true;
@@ -269,7 +301,7 @@ function Play()
             //  CYCLES user input
             cyclesValue = document.getElementById("cycles").value;
             topCyclesValue = cyclesValue;
-            // Importan counter for right naumber display
+            // Important counter for right naumber display
             cyclesCounter = topCyclesValue;
 
             //  TABATAS user input
@@ -277,10 +309,28 @@ function Play()
             topTabatasValue = tabatasValue;
 
             // in case where there is not PREPARE mode, HC version
-            if(prepareValue==0)
+            if(prepareValue==0) {
+              //  Maximal sound actions
+              mainSoundActionCounter = topCyclesValue * 2;  // IN HC there is 8 sound actions
+              //  Number of MJAU sound
+              maximalMjauSounds = mainSoundActionCounter * mjauINDEX;
+              //  Define random cat sound (MJAU)
+              RandomCatSound();
               Work();
-            else
+            }
+            else {
+              //  Maximal sound actions
+              mainSoundActionCounter = topCyclesValue * 2;  // IN HC there is 8 sound actions
+              //  Number of MJAU sound
+              maximalMjauSounds = mainSoundActionCounter * mjauINDEX;
+              //  Define random cat sound (MJAU)
+              RandomCatSound();
               Prepare(); 
+            }
+
+
+
+            
       }
   }
 }
@@ -290,7 +340,10 @@ function Play()
 
 
 
-// ---------------------------    PREPARE MODE  METHOD  --------------------------------- //
+/*  ------------------------------------------------ *\
+*   PREPARE/WORK/REST METHODS
+\*  ------------------------------------------------ */
+
 function Prepare()
 {
     console.log("PREPARE sam");
@@ -365,7 +418,12 @@ function PrepareBasicDisplay()
 // ---------------------------    WORK MODE   -------------------------------------- //
 function Work()
 { 
+    //  Define position/MODE
     console.log("WORK sam");
+
+
+    //  Tell me about mjau counter
+    console.log("Mjau counter (W): " + endSoundsCounter);
 
     if(pauseIsOn)
     {
@@ -394,11 +452,30 @@ function Work()
       // Stop REST sound
       restBeepSound.pause();
     }
-
+    /// CHECK THOS BECAUS OF MJAU !!!!!!!!!!!!!!!!!!
     if(!pauseIsOn)
     {
-      // Start WORK sound
-      workBeepSound.play();
+      //  Check if MRNJAU sound is possible
+      for (var i=0;i<maximalMjauSounds;i++) {
+        
+          if (endSoundsCounter == mrnjauSoundArray[i]) {
+            catBeepSound.play();
+            iAmInSoundArray = true;
+          }
+      }
+
+      if (iAmInSoundArray==false) 
+      {
+          workBeepSound.play();
+          //catBeepSound.play();
+      }
+
+      // Increase  sound  counter after every mode BEEP
+      endSoundsCounter++;
+
+      //  Return sound boolean to false
+      iAmInSoundArray = false;
+
     }
 
     playIsActive = true;
@@ -449,7 +526,11 @@ function WorkBasicDisplay()
 // ---------------------------    REST MODE METHOD -------------------------------------- //
 function Rest()
 {
+    //  Define position/MODE
     console.log("REST sam");
+
+    //  Tell me about mjau counter
+    console.log("Mjau counter (R): " + endSoundsCounter);
 
     prepareModeIsActive = false;
     workModeIsActive = false;
@@ -480,13 +561,33 @@ function Rest()
 
     if(!pauseIsOn)
     {
-      // Start WORK sound
-      restBeepSound.play();
+      //  Check if MRNJAU sound is possible
+      for (var i=0;i<maximalMjauSounds;i++) {
+        
+          if (endSoundsCounter == mrnjauSoundArray[i]) {
+            catBeepSound.play();
+            iAmInSoundArray = true;
+          }
+      }
+
+      if (iAmInSoundArray==false) 
+      {
+          restBeepSound.play();
+      }
+
+      // Increase  sound  counter after every mode BEEP
+      endSoundsCounter++;
+
+      //  Return sound boolean to false
+      iAmInSoundArray = false;
     }
 
     playIsActive = true;
     pauseIsOn = false;
 }
+
+
+
 // ---------------------------------------------------------------------------------- //
 
 function RestCalcute()
@@ -815,6 +916,10 @@ function Reset()
 
   clearInterval(restInterval);
   clearInterval(restColoringInterval);
+
+
+  // Determine cat sounds again
+  RandomCatSound();
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -822,6 +927,8 @@ function UserReset()
 {  
   Reset();
   ResetCycles(); 
+  // Determine cat sounds again
+  RandomCatSound();
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -859,6 +966,11 @@ function WorkBeep()
 function RestBeep() 
 {
     restBeepSound = new Audio("sounds/buzzer.mp3"); 
+}
+
+function CatBeep() 
+{
+    catBeepSound = new Audio("sounds/cat.mp3"); 
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -947,13 +1059,98 @@ function DirectCheckPrepare(directValue)
     }
 }
 // ---------------------------------------------------------------------------------- //
-function Countdown() {
 
-}
-// ---------------------------------------------------------------------------------- //
 function RandomCatSound() {
-  
-}
-// ---------------------------------------------------------------------------------- //
 
-//  Input check countdown
+  //  Fill array with possible numbers
+  for(i=0; i<mainSoundActionCounter; i++) {
+      endsFollowedBySound[i] = i;
+  }
+  console.log("First array : " + endsFollowedBySound);
+
+
+  //  FOR Loop goes to maximal MJAU number, index is 1/4
+  for(i=0; i<maximalMjauSounds; i++) {
+
+          var maxPoolLength = endsFollowedBySound.length;
+          console.log("Array length (1) : " + maxPoolLength);
+
+          
+          var xSound = Math.floor((Math.random() * maxPoolLength)); // Number from 1 to max
+          console.log("Random sound : " + xSound);
+
+
+          // In this case there is two numbers, 3 and 1 for example
+          var choosenNumber = endsFollowedBySound[xSound];
+
+          //  Add random mode end action which will has MJAU sound
+          mrnjauSoundArray.push(choosenNumber);
+
+          //  Remove/slice selected random number
+          endsFollowedBySound.splice(choosenNumber, 1);
+
+
+          // Decrease size of array because of pop and push
+          console.log("Array length (2) : " + endsFollowedBySound.length);
+      
+  }
+
+  console.log("Second array : " + endsFollowedBySound);
+
+  console.log("Mjau numbers " + mrnjauSoundArray);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  Sth
