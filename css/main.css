@@ -82,8 +82,26 @@ body {
  * it will appear in the CSS output. */
 .countdown {
   border-bottom: 2px solid #353535;
-  margin-bottom: 9%;
+  margin-bottom: 4%;
   padding: 0; }
+
+.countdown--button {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-bottom: 4%; }
 
 .prepare {
   border-bottom: 2px solid #D8FF1A;
@@ -209,3 +227,6 @@ input.tabtas-input::-webkit-inner-spin-button {
 .button-image--reset {
   background: url("../img/repeat.svg") no-repeat center;
   background-color: #EDEDED; }
+
+.button__countdown {
+  width: 40%; }

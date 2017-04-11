@@ -14,6 +14,10 @@ var arcCycle;
 var arcTabatas;
 
 // --------------------------------  USER INPUT  ---------------------------------------- //
+// New one for CD
+var countdownValue,
+    topCountdownValue;    
+
 var prepareValue;
 var topPrepareValue;
 
@@ -30,6 +34,9 @@ var tabatasValue;
 var topTabatasValue;
 
 // ------------------------------    TIMERS  -------------------------------------------- //
+
+
+
 var prepareInterval;
 var prepareColoringInterval;
 
@@ -46,6 +53,9 @@ var cyclesColoringInterval;
 var currentTimerArcValue;
 var currentCycleArcValue;
 var currentTabatasArcValue;
+
+//  Displaying minutes and second for countdown
+var minutesAndSecondDisplay;
 
 
 // -------------------------------- COUNTERS  ----------------------------------------- //
@@ -80,6 +90,7 @@ var iAmInSoundArray = false;
 var playButton;
 var pauseButton;
 var resetButton;
+var countdownButton;
 
 
 
@@ -96,7 +107,7 @@ var mainSoundActionCounter;  // IN HC there is 8 sound actions
 var endSoundsCounter = 0;
 
 //  Index is 1/4, not random but static with random time of showing
-var mjauINDEX = 0.25;   //   1/4
+var mjauINDEX = 0.1;   //   1/4
 
 //  Number of MJAU sound
 var maximalMjauSounds;
@@ -107,6 +118,10 @@ var endsFollowedBySound = [];
 
 //  Array with mode end actions with MJAU sound
 var mrnjauSoundArray = [];
+
+
+
+
 
 
 
@@ -141,13 +156,29 @@ function Setup()
     event.preventDefault();
   }
   );
-// ---------------------------  GRAPHICS  --------------------------------------------- //  
+
+  countdownButton = document.getElementById("js-countdown");
+  countdownButton.addEventListener("click", function onclick(event) 
+  {
+    Countdown();
+    event.preventDefault();
+  }
+  );
+
+
+  
+
+
+// ---------------------------  GRAPHICS  --------------------------------------------- //
+
     //  SVG area
     svg = d3.select("#js-clock")
       .append("svg")
       .attr("width", width)
       .attr("height", height);
 
+
+// ---------------------------  SVG CYCLE TIMERS ----------------------------------------- // 
 
     //  Timer circle
     svg.append("circle")
@@ -162,7 +193,6 @@ function Setup()
       //  Circle width
       .style("stroke-width","16"); //    CHANGED TO 16 from 8
                   
-
     // Cycle circle
     svg.append("circle")
       .attr("cx","150")
@@ -183,7 +213,7 @@ function Setup()
 
 // ------------------------------  TEXT  --------------------------------------------- // 
 
-    //  Text for timer
+    //  Text for timer, heading "HERCULES"
     svg.append("text")
         .attr("x", "147")
         .attr("y", "90")
@@ -193,7 +223,7 @@ function Setup()
         .attr("fill", "gray")
         .attr("id","mainTitle");
 
-    // Text for cycles
+    // Text for cycles, mini-heading "CYCLES"
     svg.append("text")
         .attr("x", "134")
         .attr("y", "264")
@@ -202,7 +232,7 @@ function Setup()
         .attr("font-size", "8px")
         .attr("fill", "gray");
 
-    // Text for tabatas
+    // Text for tabatas, mini-heading "TABATAS"
     svg.append("text")
         .attr("x", "234")
         .attr("y", "264")
@@ -223,6 +253,24 @@ function Setup()
         .attr("font-size", "90px")
         .attr("fill", "black")
         .attr("id", "mainTimerDisplay");
+
+
+
+
+
+//    NEW ONE FOR COUNTDOWNS
+  svg.append("text")
+        .attr("x", "162")
+        .attr("y", "229")
+        //.attr("x", function(d) { return d.cx; })
+        .text("00:00")
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "30px")
+        .attr("fill", "black")
+        .attr("id", "countdownDisplay"); // new ID, search for his connetions
+
+
+
 
   //Add the variable number for cycles
     svg.append("text")
@@ -247,7 +295,8 @@ function Setup()
     // Create music objects for sounds
     WorkBeep();
     RestBeep();   
-    CatBeep();  
+    CatBeep(); 
+    CountdowntBeep(); 
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -285,6 +334,7 @@ function Play()
       }
       else
       {
+
             //  PREPARE MODE - user input
             prepareValue = document.getElementById("prepare").value;
             topPrepareValue = prepareValue;
@@ -396,10 +446,11 @@ function PrepareCalcute()
 // ------------------------------------------------------------------------------------- //
 function PrepareBasicDisplay()
 { 
-    d3.select("#mainTitle")
+  d3.select("#mainTitle")
     .attr("x", "151")
     .text("PREPARE");
   d3.select("#mainTimerDisplay").text(topPrepareValue);
+
   if(prepareValue>9)
   {
     d3.select("#mainTimerDisplay")
@@ -878,6 +929,7 @@ function Reset()
   d3.select("#mainTimerDisplay")
           .attr("x", "172")
           .attr("y", "189");
+
   // Sound methods, turn off
   if(workModeIsActive)
   {
@@ -957,7 +1009,12 @@ function ResetCycles()
 
 
 
-// ------------------------------  SOUND METHODS  ----------------------------------- //
+
+
+/*  ------------------------------------------------ *\
+*   SOUND METHODS
+\*  ------------------------------------------------ */
+
 function WorkBeep() 
 {  
     workBeepSound = new Audio("sounds/buzzer.mp3"); 
@@ -968,97 +1025,16 @@ function RestBeep()
     restBeepSound = new Audio("sounds/buzzer.mp3"); 
 }
 
+function CountdowntBeep() 
+{
+    countdownBeepSound = new Audio("sounds/countdown.mp3"); 
+}
+// ---------------------------------------------------------------------------------- //
+
 function CatBeep() 
 {
     catBeepSound = new Audio("sounds/cat.mp3"); 
 }
-// ---------------------------------------------------------------------------------- //
-
-
-
-
-
-// --------------------------  INPUT  METHODS    -------------------------------- //
-function InputCheckPrepare()
-{
-  var checkValue = document.getElementById("prepare").value;
-  var checkValueINT = parseInt(checkValue);
-
-  checkValue = DirectCheckPrepare(checkValueINT);
-  document.getElementById("prepare").value = checkValue;
-}
-function InputCheckWork()
-{
-  var checkValue = document.getElementById("work").value;
-  var checkValueINT = parseInt(checkValue);
-
-  checkValue = DirectCheck(checkValueINT);
-  document.getElementById("work").value = checkValue;
-}
-function InputCheckRest()
-{
-  var checkValue = document.getElementById("rest").value;
-  var checkValueINT = parseInt(checkValue);
-
-  checkValue = DirectCheck(checkValueINT);
-  document.getElementById("rest").value = checkValue;
-}
-function InputCheckCycle()
-{
-  var checkValue = document.getElementById("cycles").value;
-  var checkValueINT = parseInt(checkValue);
-
-  checkValue = DirectCheck(checkValueINT);
-  document.getElementById("cycles").value = checkValue;
-}
-function InputCheckTabatas()
-{
-  var checkValue = document.getElementById("tabatas").value;
-  var checkValueINT = parseInt(checkValue);
-
-
-  checkValue = DirectCheck(checkValueINT);
-  document.getElementById("tabatas").value = checkValue;
-}
-// ---------------------------------------------------------------------------------- //
-function DirectCheck(directValue)
-{
-    checkValueINT = directValue;
-    if (isNaN(checkValueINT)) 
-    {
-      alert("You have not entered a number. \n\n Please enter a number!");
-      return 4;
-    }
-    if ((checkValueINT < 1 ) || (checkValueINT > 300))
-    {
-      alert("Please enter number that can be used in this application. Thank you.");
-      return 4;
-    }
-    else 
-    {
-      return checkValueINT;
-    }
-}
-// ---------------------------------------------------------------------------------- //
-function DirectCheckPrepare(directValue)
-{
-    checkValueINT = directValue;
-    if (isNaN(checkValueINT)) 
-    {
-      alert("You have not entered a number. \n\n Please enter a number!");
-      return 4;
-    }
-    if ((checkValueINT < 0 ) || (checkValueINT > 300))
-    {
-      alert("Please enter number that can be used in this application. Thank you.");
-      return 4;
-    }
-    else 
-    {
-      return checkValueINT;
-    }
-}
-// ---------------------------------------------------------------------------------- //
 
 function RandomCatSound() {
 
@@ -1099,10 +1075,218 @@ function RandomCatSound() {
 
   console.log("Mjau numbers " + mrnjauSoundArray);
 }
+// ---------------------------------------------------------------------------------- //
 
 
 
+/*  ------------------------------------------------ *\
+*   INPUT CHECK METHODS
+\*  ------------------------------------------------ */
 
+function InputCheckCountdown()
+{
+  var checkValue = document.getElementById("countdown").value;
+  var checkValueINT = parseInt(checkValue);
+
+  checkValue = DirectCheckCountdown(checkValueINT);
+  document.getElementById("countdown").value = checkValue;
+}
+
+function InputCheckPrepare()
+{
+  var checkValue = document.getElementById("prepare").value;
+  var checkValueINT = parseInt(checkValue);
+
+  checkValue = DirectCheckPrepare(checkValueINT);
+  document.getElementById("prepare").value = checkValue;
+}
+
+function InputCheckWork()
+{
+  var checkValue = document.getElementById("work").value;
+  var checkValueINT = parseInt(checkValue);
+
+  checkValue = DirectCheck(checkValueINT);
+  document.getElementById("work").value = checkValue;
+}
+
+function InputCheckRest()
+{
+  var checkValue = document.getElementById("rest").value;
+  var checkValueINT = parseInt(checkValue);
+
+  checkValue = DirectCheck(checkValueINT);
+  document.getElementById("rest").value = checkValue;
+}
+
+function InputCheckCycle()
+{
+  var checkValue = document.getElementById("cycles").value;
+  var checkValueINT = parseInt(checkValue);
+
+  checkValue = DirectCheck(checkValueINT);
+  document.getElementById("cycles").value = checkValue;
+}
+
+function InputCheckTabatas()
+{
+  var checkValue = document.getElementById("tabatas").value;
+  var checkValueINT = parseInt(checkValue);
+
+
+  checkValue = DirectCheck(checkValueINT);
+  document.getElementById("tabatas").value = checkValue;
+}
+// ---------------------------------------------------------------------------------- //
+function DirectCheck(directValue)
+{
+    checkValueINT = directValue;
+    if (isNaN(checkValueINT)) 
+    {
+      alert("You have not entered a number. \n\n Please enter a number!");
+      return 4;
+    }
+    if ((checkValueINT < 1 ) || (checkValueINT > 300))
+    {
+      alert("Please enter number that can be used in this application. Thank you.");
+      return 4;
+    }
+    else 
+    {
+      return checkValueINT;
+    }
+}
+// ---------------------------------------------------------------------------------- //
+
+function DirectCheckPrepare(directValue)
+{
+    checkValueINT = directValue;
+    if (isNaN(checkValueINT)) 
+    {
+      alert("You have not entered a number. \n\n Please enter a number!");
+      return 4;
+    }
+    if ((checkValueINT < 0 ) || (checkValueINT > 300))
+    {
+      alert("Please enter number that can be used in this application. Thank you.");
+      return 4;
+    }
+    else 
+    {
+      return checkValueINT;
+    }
+}
+// ---------------------------------------------------------------------------------- //
+
+function DirectCheckCountdown(directValue)
+{
+    checkValueINT = directValue;
+    if (isNaN(checkValueINT)) 
+    {
+      alert("You have not entered a number. \n\n Please enter a number!");
+      return 300;
+    }
+    if ((checkValueINT < 30 ) || (checkValueINT > 3600))
+    {
+      alert("Please enter number that can be used in this application. Thank you.");
+      return 300;
+    }
+    else 
+    {
+      return checkValueINT;
+    }
+}
+// ---------------------------------------------------------------------------------- //
+
+function Countdown() {
+
+  //  COUNTDOWN MODE - user input, independent from any other input
+  countdownValue = document.getElementById("countdown").value;
+  topCountdownValue = countdownValue;
+
+
+  var time = topCountdownValue;
+  //var time = 662;
+  var minutes_float = time/60;
+  var minutes = Math.floor(minutes_float);
+  var seconds = time%60;
+
+
+  console.log("Minutes : " + minutes + " min");
+  console.log("Seconds : " + seconds + " sec");
+
+
+  //  Invode display method
+  NiceCountdownDisplay();
+
+  //  Inside function, needs outside variables for functionallity
+  function NiceCountdownDisplay() {
+      //  Take care about one-digit numbers (min and sec)
+      //  THERE IS A BETTER APPROACH  !!!
+      //  Minutes are less then 10
+      if(minutes<10) {
+          //  Minutes are less then 10 and seconds are less then 10
+          if (seconds<10) {
+              minutesAndSecondDisplay = "0" + minutes  + ":"  + "0"  + seconds;
+          }
+          //  Minutes are less then 10 and seconds are gretter then 10
+          else {
+              minutesAndSecondDisplay = "0" + minutes  + ":" + seconds;
+          }
+      }
+      // Minutes are gretter then 10
+      if(minutes>9) {
+          //  Minutes are less then 10 and seconds are less then 10
+          if (seconds<10) {
+              minutesAndSecondDisplay = "" + minutes  + ":"  + "0"  + seconds;
+          }
+          //  Minutes are less then 10 and seconds are gretter then 10
+          else {
+              minutesAndSecondDisplay = "" + minutes  + ":" + seconds;
+          }
+      }
+
+      //  Take SVG counter text and display new value
+      d3.select("#countdownDisplay").text(minutesAndSecondDisplay);
+
+      //  Test
+      //console.log("Minutes : " + minutes + " min");
+      //console.log("Seconds : " + seconds + " sec");
+  }
+  
+
+  //  Set counting time interval for countdown option
+  var startCountingCountdown = setInterval(CountCountdown, 1000);
+
+  //  Invoke countodown timer 
+  function CountCountdown() {
+
+    //  Every second decrease one second  :)
+    seconds--;
+
+    //  If second are under 0, decrease minutes and put seconds to 59
+    if(seconds<0) {
+      minutes--;
+      seconds = 59;
+    }
+
+    //  Now display minutes and second again
+    NiceCountdownDisplay();
+
+
+    //  If there is 5min or 2min then make some noise
+    if((minutes==5 && seconds==0) || (minutes==2 && seconds==0)) {
+      //countdownBeepSound.play();
+      countdownBeepSound.play();
+    }
+
+    // Take care about end
+    if(minutes == 0  && seconds==0) {
+      clearInterval(startCountingCountdown);
+      countdownBeepSound.play();
+    }
+  }
+}
 
 
 

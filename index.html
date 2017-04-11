@@ -23,9 +23,10 @@
 
 	        <div class="main-wrapper">
 	     
+	     		<!--  SVG  -->
 		    	<div id="js-clock" class="clock">
-
-		    	</div>
+		    		<!--  everything is done inside JS (Hercules.js) using D3.js -->
+		    	</div> <!--  end of SVG -->
 
 
 		    	<div class="menu">
@@ -34,11 +35,15 @@
 
 		    			<div class="countdown"> 
 		  					<label class="key-words prvi">COUNTDOWN</label>
-		  					<input type="number" name="countdown" min="1" max="100" step="1" value="3" class="key-numbers--extra countdown-input" id="countdown" onchange="InputCheckCountdown()">
-		  					<br>
+		  					<input type="number" name="countdown" min="300" max="3600" step="60" value="300" class="key-numbers--extra countdown-input" id="countdown" onchange="InputCheckCountdown()">
+		  					<br>		  				
 	  					</div>
 
+	  					<div class="countdown--button">
+	  						<button id="js-countdown" class="button__countdown">GO!</button>
+	  					</div>
 
+	  					
 
 		    			<div class="prepare">
 			    			<label class="key-words prvi">PREPARE</label>
@@ -76,7 +81,7 @@
 
 
 		    		<div class="buttons"> 
-		    			<div id="js-play" class="[ button  button-image--play ]"></div>
+		    			<div id="js-play"  class="[ button  button-image--play ]"></div>
 		    			<div id="js-pause" class="[ button  button-image--pause ]"></div>
 		    			<div id="js-reset" class="[ button  button-image--reset ]"></div>
 	  				</div>
