@@ -1,11 +1,24 @@
+.countdown--button {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center; 
+
+  margin-bottom: 4%;
+}
+
 .buttons {
 	display : flex;
+
 	justify-content: space-between;
 	padding-top: 3%;
+
+	width: 201px;
 }
 	.button {
 		display: inline-block;
-		height: 40px;
+		height: 52px;
 		width: 26%;
 		border-radius: 50%;
 	}

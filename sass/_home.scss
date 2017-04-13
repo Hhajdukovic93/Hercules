@@ -3,25 +3,16 @@
  * since it uses the CSS comment syntax,
  * it will appear in the CSS output. */
 
-
 // These comments are in single line
 // They will not appear in the CSS output,
 // since they use the single-line comment syntax.
+
+
 
 .countdown {
   border-bottom: 2px solid $color-black;
   margin-bottom: 4%;
   padding: 0;
-}
-
-.countdown--button {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center; 
-
-  margin-bottom: 4%;
 }
 
 .prepare {

@@ -1,38 +1,76 @@
 .container {
 	height: 100vh;
+	margin:  0 auto;
+	padding:      0;
 	max-width: 1600px;
-	margin: 0 auto;
-	padding: 0;
-
-
 }
+
   .row {
-	  display: flex;
-      flex-direction: row;
-	  flex-wrap: wrap;
+  	  height : 100vh;
+	  display:        flex;
+      flex-direction:  row;
+	  flex-wrap:      wrap;
+	  justify-content:  center;
+	  align-items:     stretch;	
+  }
 
-	  justify-content: center;
-	  align-items: stretch;	
-
-	  margin-top: 5%;
-}
 	.main-wrapper {
-	  display: flex;
-	  flex-direction: row;
-	  flex-wrap: wrap;
+	  display:        flex;
+	  flex-direction:  row;
+	  flex-wrap:       wrap;
 	  justify-content: center;
-	  align-items: center;
+	  align-items:     center;
+
+	  padding-top: 2%;
 	}
 
 	  .clock {
 		  box-sizing: border-box;
-		  width: 400px;
+		  display: block;
+		  width:  400px;
 		  height: 400px;
+		  margin-bottom: 2%;
 	  }
 
 	  .menu {
-	  	  align-self: center;
-	  	  box-sizing: border-box;
-		  min-width: 200px;
-		  height: 275px;
+	  	  width: 400px;
+	  	  display: flex;
+	  	  flex-direction:  row;
+	 	  flex-wrap:       wrap;
+	  	  justify-content: center;
+
 	  }
+
+	    .form {
+	      box-sizing: border-box;
+	  	  display: block;
+		  width:     200px;
+		  height:    275px;
+		  align-self: center;
+	    }
+
+// Breakpoint at 992px for not-mobile view. Means,  main content in one row
+
+@media all and (min-width: 992px) {
+
+	.container {
+
+	}
+
+	  .row {
+	
+	  }
+
+		.main-wrapper {
+
+		}
+
+		  .clock {
+			  height: 420px;
+			  padding-top: 4%;
+		  }
+
+		  .menu {
+
+		  }
+}
