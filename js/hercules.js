@@ -58,6 +58,9 @@ var currentTimerArcValue;
 //  Displaying minutes and second for countdown
 var minutesAndSecondDisplay;
 
+//  Displaying minutes and second for total
+//var totalAPPRunningTime = 0;
+
 
 
 /*  ------------------------------------------------ *\
@@ -100,12 +103,26 @@ var pauseIsOn = false;
 //  Important for cat sound. 
 var iAmInSoundArray = false;
 
+
+//  Am i started any timer, important for total time
+var appIsRunning = false,
+    appIsRunningWithTimer = false,
+    appIsRunningWithCD = false;
+
 // ------------------------------------------------------------------------------------- //
 
 var playButton;
 var pauseButton;
 var resetButton;
 var countdownButton;
+
+
+
+/*  ------------------------------------------------ *\
+*   CONSTANTS
+\*  ------------------------------------------------ */
+var time = 1;
+
 
 
 
@@ -149,10 +166,15 @@ var mrnjauSoundArray = [];
 
 function Setup() 
 {
-// ---------------------------  BUTTONS LISTENER  -------------------------------------- // 
+/*  ------------------------------------------------ *\
+*   TIMER BUTTONS LISTENER
+\*  ------------------------------------------------ */
+
   playButton = document.getElementById("js-play");
   playButton.addEventListener("click", function onclick(event) 
   {
+    appIsRunning = true;
+    appIsRunningWithTimer = true;
     Play();
     event.preventDefault();
   }
@@ -170,6 +192,36 @@ function Setup()
   resetButton.addEventListener("click", function onclick(event) 
   {
     UserReset();
+    event.preventDefault();
+  }
+  );
+
+/*  ------------------------------------------------ *\
+*   COUNTODOWN BUTTONS LISTENER
+\*  ------------------------------------------------ */
+
+  countdownPlayButton = document.getElementById("js-playCD");
+  countdownPlayButton.addEventListener("click", function onclick(event) 
+  {
+    appIsRunning = true;
+    appIsRunningWithCD = true;
+    Countdown();
+    event.preventDefault();
+  }
+  );
+
+  countdownPauseButton = document.getElementById("js-pauseCD");
+  countdownPauseButton.addEventListener("click", function onclick(event) 
+  {
+    //Pause();
+    event.preventDefault();
+  }
+  );
+
+  countdownResetButton = document.getElementById("js-resetCD");
+  countdownResetButton.addEventListener("click", function onclick(event) 
+  {
+    //UserReset();
     event.preventDefault();
   }
   );
@@ -222,7 +274,7 @@ function Setup()
 
 // -------------------------------  NUMBERS  -------------------------------------------- //
 
-    //Add the variable number for MAIN TIMER
+    //  Add the variable number for MAIN TIMER
     svg.append("text")
         .attr("x", "172")
         .attr("y", "189")
@@ -233,19 +285,19 @@ function Setup()
         .attr("fill", "black")
         .attr("id", "mainTimerDisplay");
 
+    //  Add the variable number for TOTAL
+    svg.append("text")
+      .attr("x", "162")
+      .attr("y", "279")
+      //.attr("x", function(d) { return d.cx; })
+      .text("00:00")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "30px")
+      .attr("fill", "navy")
+      .attr("id", "total"); // new ID, search for his connetions
 
 
 
-//    NEW ONE FOR COUNTDOWNS  (IT WILL BE TOTAL!)
-  svg.append("text")
-        .attr("x", "162")
-        .attr("y", "279")
-        //.attr("x", function(d) { return d.cx; })
-        .text("00:00")
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "30px")
-        .attr("fill", "navy")
-        .attr("id", "countdownDisplay"); // new ID, search for his connetions
 
 /*  ------------------------------------------------ *\
 *   SECOND TIMER
@@ -298,7 +350,7 @@ function Setup()
        .attr("font-family", "sans-serif")
        .attr("font-size", "70px")
        .attr("fill", "black")
-       .attr("id", "countdownTimerDisplay");
+       .attr("id", "countdownDisplay");
 
 
 
@@ -323,6 +375,18 @@ function Setup()
 
 function Play()
 {
+  // Total time must go on here or in Countdown MODE
+  //totalTimeInHercules();
+
+  //if (appIsRunningWithTimer) {}
+  // Total time goes if there is pressed play button, timer or CD
+  if (appIsRunning && !appIsRunningWithCD) {
+    console.log("OPAAAAAAAAAAAAA");
+    totalTimeInHercules();
+  }
+
+
+
   //  Play or continue depending od boolean variables, Play button double nature
   if(!playIsActive || pauseIsOn)
   {
@@ -1143,6 +1207,14 @@ function DirectCheckCountdown(directValue)
 
 function Countdown() {
 
+
+// TOTAL TIMEEEE
+  // Total time goes if there is pressed play button, timer or CD
+  if (appIsRunning && !appIsRunningWithTimer) {
+    console.log("OPAAAAAAAAAAAAA");
+    totalTimeInHercules();
+  }
+
   //  COUNTDOWN MODE - user input, independent from any other input
   countdownValue = document.getElementById("countdown").value;
   topCountdownValue = countdownValue;
@@ -1231,6 +1303,100 @@ function Countdown() {
   }
 }
 
+// ------------------------------------------------------------------------------------------------- //
+function totalTimeInHercules() 
+{
+
+  var totalAPPRunningTime;
+
+  var minutes_float = time/60;
+  var minutes = Math.floor(minutes_float);
+  var seconds = time%60;
+
+
+  console.log("Minutes : " + minutes + " min");
+  console.log("Seconds : " + seconds + " sec");
+
+
+  //  Invoke display method
+  NiceCountdownDisplay();
+
+  //  Inside function, needs outside variables for functionallity
+  function NiceCountdownDisplay() {
+      //  Take care about one-digit numbers (min and sec)
+      //  THERE IS A BETTER APPROACH  !!!
+      //  Minutes are less then 10
+      if(minutes<10) {
+          //  Minutes are less then 10 and seconds are less then 10
+          if (seconds<10) {
+              totalAPPRunningTime = "0" + minutes  + ":"  + "0"  + seconds;
+          }
+          //  Minutes are less then 10 and seconds are gretter then 10
+          else {
+              totalAPPRunningTime = "0" + minutes  + ":" + seconds;
+          }
+      }
+      // Minutes are gretter then 10
+      if(minutes>9) {
+          //  Minutes are less then 10 and seconds are less then 10
+          if (seconds<10) {
+              totalAPPRunningTime = "" + minutes  + ":"  + "0"  + seconds;
+          }
+          //  Minutes are less then 10 and seconds are gretter then 10
+          else {
+              totalAPPRunningTime = "" + minutes  + ":" + seconds;
+          }
+      }
+
+      console.log("TOTAL : " + totalAPPRunningTime);
+
+      //  Take SVG counter text and display new value
+      d3.select("#total").text(totalAPPRunningTime);
+
+      //  Test
+      //console.log("Minutes : " + minutes + " min");
+      //console.log("Seconds : " + seconds + " sec");
+  }
+  
+
+  //  Set counting time interval for total option
+  var  totalHerculesTime = setInterval(CountCountdown, 1000);
+
+  //  Invoke countodown timer 
+  function CountCountdown() {
+
+    //  Every second increase one second  :)
+    seconds++;
+
+    //  If second are under 0, decrease minutes and put seconds to 59
+    if(seconds<0) {
+      minutes--;
+      seconds = 59;
+    }
+
+    //  Now display minutes and second again
+    NiceCountdownDisplay();
+
+
+/*    
+//  If there is 5min or 2min then make some noise
+    if((minutes==5 && seconds==0) || (minutes==2 && seconds==0)) {
+      //countdownBeepSound.play();
+      countdownBeepSound.play();
+    }
+
+    // Take care about end
+    if(minutes == 0  && seconds==0) {
+      clearInterval(startCountingCountdown);
+      countdownBeepSound.play();
+    }
+  */
+  } 
+
+
+  //  TAKE CAREEEE
+  //clearInterval(totalHerculesTime);
+}
 
 // ------------------------------------------------------------------------------------------------- //
 // ------------------------------------------------------------------------------------------------- //
