@@ -4,11 +4,13 @@
 	<head>
 	  <title>Hercules</title>
 	  <meta charset="UTF-8">
-      <!--  Bootstrap Core CSS -->
+	  <!--  Mobile Meta -->
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!--  Bootstrap CSS -->
       <link href="css/bootstrap.min.css" rel="stylesheet">
 	  <!--  Developer CSS -->
 	  <link rel="stylesheet" type="text/css" href="css/main.css">
-	  <!--  D3 vizualization -->
+	  <!--  D3 JS -->
 	  <script type="text/javascript" src="js/d3.js"></script>
 	  <!--  Developer JS -->
 	  <script type="text/javascript" src="js/hercules.js"></script>
@@ -19,98 +21,130 @@
 
 	<body onload="Setup()">
 
-	  <div class="container">
+	  <div class="container-fluid">
 
-	    <div class="row">
+	    <div class="[ row  row--clocks ]">
 
-	    	<!-- CONTENT -->
-	        <main class="main-wrapper">
-	     
-	     		<!--  SVG  -->
-		    	<div id="js-clock" class="clock">
-		    		<!--  everything is done inside JS (Hercules.js) using D3.js -->
-		    	</div> <!--  end of SVG -->
+	     	<div id="js-clock" class="clock">
+		    	<!--  everything is done inside JS (Hercules.js) using D3.js -->
+		    </div> <!--  end of SVG -->
 
+ 		    <div id="js-clock2" class="clock--countdown">
+		    	<!-- everything is done inside JS (Hercules.js) using D3.js -->
+		    </div> <!--  end of SVG --> 
 
-		    	<div class="menu">
-
-		    		<form class="form">
-
-		    			<div class="countdown"> 
-		  					<label class="key-words prvi">COUNTDOWN</label>
-		  					<input type="number" name="countdown" min="300" max="3600" step="60" value="300" class="key-numbers--extra countdown-input" id="countdown" onchange="InputCheckCountdown()">
-		  					<br>		  				
-	  					</div>
-
-	  					<div class="countdown--button">
-	  						<button id="js-countdown" class="button__countdown">GO!</button>
-	  					</div>
-
-	  					
-		    			<div class="prepare">
-			    			<label class="key-words prvi">PREPARE</label>
-		  					<input type="number" name="prepare" min="0" max="300" step="1" value="30" class="key-numbers prepare-input" id="prepare" onchange="InputCheckPrepare()">
-		  					<br>
-	  					</div>
+	    </div>  <!--  end of  FIRST row -->
 
 
-	  					<div class="work"> 
-		  					<label class="key-words prvi">WORK</label>
-		  					<input type="number" name="work" min="4" max="300" step="1" value="30" class="key-numbers work-input" id="work" onchange="InputCheckWork()"> 
-		  					<br>
-	  					</div>
+
+	    <div class="[row  row--menus ]">
+
+	    		<div class="menu">
+
+	    			<div class="form-wrapper">
+	    				
+	    				<form class="form">
+
+				    		<div class="prepare">
+					    		<label class="key-words prvi">PREPARE</label>
+				  				<input type="number" name="prepare" min="0" max="300" step="1" value="30" class="key-numbers prepare-input" id="prepare" onchange="InputCheckPrepare()">
+				  				<br>
+			  				</div>
 
 
-	  					<div class="rest"> 
-		  					<label class="key-words prvi">REST</label>
-		  					<input type="number" name="rest" min="4" max="300" step="1" value="30" class="key-numbers rest-input" id="rest" onchange="InputCheckRest()">
-		  					<br>
-	  					</div>
+			  				<div class="work"> 
+				  				<label class="key-words prvi">WORK</label>
+				  				<input type="number" name="work" min="4" max="300" step="1" value="30" class="key-numbers work-input" id="work" onchange="InputCheckWork()"> 
+				  				<br>
+			  				</div>
 
 
-	  					<div class="cycles"> 
-		  					<label class="key-words prvi">CYCLES</label>
-		  					<input type="number" name="cycles" min="1" max="100" step="1" value="2" class="key-numbers--extra cycles-input" id="cycles" onchange="InputCheckCycle()">
-		  					<br>
-	  					</div>
+			  				<div class="rest"> 
+				  				<label class="key-words prvi">REST</label>
+				  				<input type="number" name="rest" min="4" max="300" step="1" value="30" class="key-numbers rest-input" id="rest" onchange="InputCheckRest()">
+				  				<br>
+			  				</div>
 
 
-	  					<div class="tabatas"> 
-		  					<label class="key-words prvi">TABATAS</label>
-		  					<input type="number" name="tabatas" min="1" max="100" step="1" value="3" class="key-numbers--extra tabatas-input" id="tabatas" onchange="InputCheckTabatas()">
-		  					<br>
-	  					</div>
-	  					
-		    		</form> <!-- end of form -->
+			  				<div class="cycles"> 
+				  				<label class="key-words prvi">CYCLES</label>
+				  				<input type="number" name="cycles" min="1" max="100" step="1" value="2" class="key-numbers--extra cycles-input" id="cycles" onchange="InputCheckCycle()">
+				  				<br>
+			  				</div>
 
 
-		    		<div class="buttons"> 
-		    			<div id="js-play"  class="[ button  button-image--play ]"></div>
-		    			<div id="js-pause" class="[ button  button-image--pause ]"></div>
-		    			<div id="js-reset" class="[ button  button-image--reset ]"></div>
-	  				</div> <!-- end of menu buttons -->
+			  				<div class="tabatas"> 
+				  				<label class="key-words prvi">TABATAS</label>
+				  				<input type="number" name="tabatas" min="1" max="100" step="1" value="3" class="key-numbers--extra tabatas-input" id="tabatas" onchange="InputCheckTabatas()">
+				  				<br>
+			  				</div>
+			  					
+				    	</form> <!-- end of form -->
+
+	    			</div> <!-- end of form-wrapper -->
+
+
+	    			<div class="button-wrapper">
+				    	<div class="buttons"> 
+				    		<div id="js-play"  class="[ button  button-image--play ]"></div>
+				    		<div id="js-pause" class="[ button  button-image--pause ]"></div>
+				    		<div id="js-reset" class="[ button  button-image--reset ]"></div>
+		  				</div> <!-- end of menu buttons -->    				
+	    			</div> <!-- end of button-wrapper -->
 
 		    	</div> <!--  end of menu -->
 
+	    		
 
-	        </main> <!-- end of main -->
 
-	        <footer class="footer">
+	    		<div class="menu">
+
+	    			<div class="form-wrapper">
+
+			    		<form class="form form--countdown">
+
+				    		<div class="countdown"> 
+				  				<label class="key-words prvi">COUNTDOWN</label>
+				  				<input type="number" name="countdown" min="300" max="3600" step="60" value="300" class="key-numbers--extra countdown-input" id="countdown" onchange="InputCheckCountdown()">
+				  				<br>		  				
+			  				</div>
+
+			  				<div class="countdown--button">
+			  					<button id="js-countdown" class="button__countdown">GO!</button>
+			  				</div>		  					
+			  					
+				    	</form> <!-- end of form -->
+
+				    </div> <!-- end of form-wrapper -->
+
+					<div class="button-wrapper">
+
+					    <div class="buttons"> 
+					    	<div id="js-play"  class="[ button  button-image--play ]"></div>
+					    	<div id="js-pause" class="[ button  button-image--pause ]"></div>
+					    	<div id="js-reset" class="[ button  button-image--reset ]"></div>
+				  		</div> <!-- end of menu buttons -->
+
+				  	</div> <!-- end of button-wrapper -->
+		  
+		    	</div> <!--  end of menu -->
+
+
+	    </div> <!--  end of row -->
+
+
+
+	    <div class="[row  row--footer ]">
+
+	    	<footer class="footer">
 	        	<span class="footer__text">Digitalized by <a href="http://bamboolab.eu/" target="_blank" class="footer__link">Bamboo Lab</a></span>
 	    	</footer> <!-- / footer -->
 
-
-	    </div> <!-- / row -->
-
-
-
-	    
-
-
-	    
+	    </div> <!--  end of row -->
 
 
 	  </div> <!-- / container -->
 
-	</body>
-</html>
+	</body> <!-- / body -->
+
+</html> <!-- / html -->

@@ -1,28 +1,96 @@
-.container {
-  height: 100vh;
-  margin: 0 auto;
-  padding: 0;
-  max-width: 1600px; }
+.container-fluid {
+  max-width: 1600px;
+  padding: 0; }
 
 .row {
-  height: 100vh;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-flex-wrap: wrap;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
+  -webkit-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-  -webkit-align-items: stretch;
-  -ms-flex-align: stretch;
-  align-items: stretch; }
+  margin: 0;
+  padding: 0; }
+  .row--clocks {
+    padding: 1%;
+    min-width: 900px;
+    height: 100vh;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center; }
+  .row--menus {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center; }
+  .row--footer {
+    -webkit-align-items: flex-start;
+    -ms-flex-align: start;
+    align-items: flex-start; }
 
-.main-wrapper {
+.clock {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 400px;
+  height: 100%;
+  padding-top: 0; }
+  .clock--countdown {
+    box-sizing: border-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    width: 400px;
+    height: 100%; }
+
+.menu {
+  width: 50%;
+  margin: 0;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -37,18 +105,11 @@
   justify-content: center;
   -webkit-align-items: center;
   -ms-flex-align: center;
-  align-items: center;
-  padding-top: 2%; }
+  align-items: center; }
 
-.clock {
-  box-sizing: border-box;
-  display: block;
-  width: 400px;
-  height: 400px;
-  margin-bottom: 2%; }
-
-.menu {
-  width: 400px;
+.form-wrapper {
+  width: 50%;
+  height: 275px;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -60,22 +121,56 @@
   flex-wrap: wrap;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
-  justify-content: center; }
+  justify-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center; }
 
 .form {
   box-sizing: border-box;
   display: block;
   width: 200px;
-  height: 275px;
+  height: 200px;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   -ms-grid-row-align: center;
   align-self: center; }
+  .form--countdown {
+    box-sizing: border-box;
+    display: block;
+    width: 200px;
+    height: 60px;
+    -webkit-align-self: center;
+    -ms-flex-item-align: center;
+    -ms-grid-row-align: center;
+    align-self: center; }
+
+.button-wrapper {
+  width: 50%;
+  height: 275px;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center; }
 
 @media all and (min-width: 992px) {
   .clock {
     height: 420px;
-    padding-top: 4%; } }
+    padding-top: 4%; }
+    .clock--countdown {
+      height: 420px;
+      padding-top: 4%; } }
 
 body {
   font-family: 'Lato', sans-serif; }

@@ -1,41 +1,52 @@
 /*  ------------------------------------------------ *\
-*   VARIABLES
+*   BASIC SVG 
 \*  ------------------------------------------------ */
 
-// -------------------------------- BASIC SVG  ---------------------------------------- //
 var svg;
 var width =  "100%";
 var height = "100%";
 var pi = Math.PI;
 
-// --------------------------------  D3  ARC ------------------------------------------- //
+
+
+/*  ------------------------------------------------ *\
+*   D3  ARC 
+\*  ------------------------------------------------ */
+
 var arcTimer;
 var arcCycle;
 var arcTabatas;
 
-// --------------------------------  USER INPUT  ---------------------------------------- //
+
+
+/*  ------------------------------------------------ *\
+*   USER INPUT
+\*  ------------------------------------------------ */
+
 // New one for CD
 var countdownValue,
     topCountdownValue;    
 
-var prepareValue;
-var topPrepareValue;
+var prepareValue,
+    topPrepareValue;
 
-var workValue;
-var topWorkValue;
+var workValue,
+    topWorkValue;
 
-var restValue;
-var topRestValue;
+var restValue,
+    topRestValue;
 
-var cyclesValue;
-var topCyclesValue;
+var cyclesValue,
+    topCyclesValue;
 
-var tabatasValue;
-var topTabatasValue;
-
-// ------------------------------    TIMERS  -------------------------------------------- //
+var tabatasValue,
+    topTabatasValue;
 
 
+
+/*  ------------------------------------------------ *\
+*   TIMERS
+\*  ------------------------------------------------ */
 
 var prepareInterval;
 var prepareColoringInterval;
@@ -58,20 +69,33 @@ var currentTabatasArcValue;
 var minutesAndSecondDisplay;
 
 
-// -------------------------------- COUNTERS  ----------------------------------------- //
+
+/*  ------------------------------------------------ *\
+*   COUNTERS
+\*  ------------------------------------------------ */
+
 
 var prepareCounter;
 var workCounter;
 var restCounter;
 var cyclesCounter;
 
-// --------------------------------- SOUND  ------------------------------------------- //
+
+
+/*  ------------------------------------------------ *\
+*   SOUND
+\*  ------------------------------------------------ */
 
 var workBeepSound;
 var restBeepSound;
 var catBeepSound; // New one
 
-// -------------------------------- BOOLEAN   --------------------------------------------- //
+
+
+/*  ------------------------------------------------ *\
+*   BOOLEAN 
+\*  ------------------------------------------------ */
+
 var playIsActive = false;
 
 var prepareModeIsActive = false;
@@ -94,8 +118,9 @@ var countdownButton;
 
 
 
-//  ---------------------  Cat sound variables  ---------------------------------------- //
-
+/*  ------------------------------------------------ *\
+*   CAT SOUND
+\*  ------------------------------------------------ */
 
 // Do that in variables PART????
 //topCyclesValue = 4; // Extande this default value to all variables in this part, MAYBE!
@@ -118,9 +143,6 @@ var endsFollowedBySound = [];
 
 //  Array with mode end actions with MJAU sound
 var mrnjauSoundArray = [];
-
-
-
 
 
 
@@ -169,16 +191,17 @@ function Setup()
   
 
 
-// ---------------------------  GRAPHICS  --------------------------------------------- //
 
-    //  SVG area
+
+/*  ------------------------------------------------ *\
+*   FIRST TIMER
+\*  ------------------------------------------------ */
+
+    //  SVG area for first circle
     svg = d3.select("#js-clock")
       .append("svg")
       .attr("width", width)
       .attr("height", height);
-
-
-// ---------------------------  SVG CYCLE TIMERS ----------------------------------------- // 
 
     //  Timer circle
     svg.append("circle")
@@ -257,7 +280,6 @@ function Setup()
 
 
 
-
 //    NEW ONE FOR COUNTDOWNS
   svg.append("text")
         .attr("x", "162")
@@ -292,19 +314,84 @@ function Setup()
         .attr("fill", "black")
         .attr("id", "tabatasTimerDisplay");
 
+
+
+
+
+/*  ------------------------------------------------ *\
+*   SECOND TIMER
+\*  ------------------------------------------------ */
+
+  //  SVG area for second circle
+  svg = d3.select("#js-clock2")
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height);
+
+
+// ------------------------------  CIRCLE  --------------------------------------------- // 
+
+  //  Timer circle
+  svg.append("circle")
+      //  X,Y coordintates
+      .attr("cx","200")
+      .attr("cy","190")
+      //  Circle radius
+      .attr("r","150")
+      //  Circle colors
+      .style("stroke","lightgray")
+      .style("fill","white")
+      //  Circle width
+      .style("stroke-width","16"); //    CHANGED TO 16 from 8
+                  
+
+// ------------------------------  TEXT  --------------------------------------------- // 
+
+  //  Text for timer, heading "COUNTDOWN"
+  svg.append("text")
+     .attr("x", "120")
+     .attr("y", "150")
+     .text("COUNTDOWN")
+     .attr("font-family", "sans-serif")
+     .attr("font-size", "24px")
+     .attr("fill", "gray")
+     .attr("id","mainTitle");
+
+
+// -------------------------------  NUMBERS  -------------------------------------------- //
+
+    //Add the variable number for MAIN TIMER
+    svg.append("text")
+       .attr("x", "115")
+       .attr("y", "220")
+       //.attr("x", function(d) { return d.cx; })
+       .text("00:00")
+       .attr("font-family", "sans-serif")
+       .attr("font-size", "70px")
+       .attr("fill", "black")
+       .attr("id", "countdownTimerDisplay");
+
+
+
+
+
+// ---------------------------------------------------------------------------------- //
+
     // Create music objects for sounds
     WorkBeep();
     RestBeep();   
     CatBeep(); 
     CountdowntBeep(); 
 }
-// ---------------------------------------------------------------------------------- //
 
 
 
 
 
-// --------------------------  PLAY  METHOD   ---------------------------------------- //
+/*  ------------------------------------------------ *\
+*   PLAY  METHOD 
+\*  ------------------------------------------------ */
+
 function Play()
 {
   //  Play or continue depending od boolean variables, Play button double nature
@@ -887,8 +974,10 @@ function CyclesArcDraw()
 
 
 
+/*  ------------------------------------------------ *\
+*   PAUSE  METHOD 
+\*  ------------------------------------------------ */
 
-// ------------------------    PAUSE   METHODS  ------------------------------------ //
 function Pause()
 {
   pauseIsOn = true;
@@ -919,8 +1008,10 @@ function Pause()
 
 
 
+/*  ------------------------------------------------ *\
+*   RESET  METHOD 
+\*  ------------------------------------------------ */
 
-// ------------------------    RESET   METHODS  ------------------------------------ //
 function Reset()
 {   
   pauseIsOn = false;
@@ -1289,7 +1380,8 @@ function Countdown() {
 }
 
 
-
+// ------------------------------------------------------------------------------------------------- //
+// ------------------------------------------------------------------------------------------------- //
 
 
 
