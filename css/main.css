@@ -52,7 +52,9 @@
   .row--footer {
     -webkit-align-items: flex-start;
     -ms-flex-align: start;
-    align-items: flex-start; }
+    align-items: flex-start;
+    margin-top: 4%;
+    margin-bottom: 1%; }
 
 .clock {
   box-sizing: border-box;
@@ -90,6 +92,7 @@
 
 .menu {
   width: 50%;
+  height: 120px;
   margin: 0;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -109,7 +112,7 @@
 
 .form-wrapper {
   width: 50%;
-  height: 275px;
+  height: 100%;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -130,7 +133,7 @@
   box-sizing: border-box;
   display: block;
   width: 200px;
-  height: 200px;
+  height: 100%;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
   -ms-grid-row-align: center;
@@ -147,7 +150,7 @@
 
 .button-wrapper {
   width: 50%;
-  height: 275px;
+  height: 100%;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;

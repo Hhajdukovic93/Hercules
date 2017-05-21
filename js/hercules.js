@@ -50,16 +50,13 @@ var workColoringInterval;
 var restInterval;
 var restColoringInterval;
 
-
+var startCountingCountdownInterval;
 
 var currentTimerArcValue;
 
 
 //  Displaying minutes and second for countdown
 var minutesAndSecondDisplay;
-
-//  Displaying minutes and second for total
-//var totalAPPRunningTime = 0;
 
 
 
@@ -109,6 +106,12 @@ var appIsRunning = false,
     appIsRunningWithTimer = false,
     appIsRunningWithCD = false;
 
+//  Boolean for countdown method
+var countdownIsActive = false;
+
+//  Boolean for CD reset status
+var iAmResetInCD = false;
+
 // ------------------------------------------------------------------------------------- //
 
 var playButton;
@@ -121,7 +124,7 @@ var countdownButton;
 /*  ------------------------------------------------ *\
 *   CONSTANTS
 \*  ------------------------------------------------ */
-var time = 1;
+var time = 0;
 
 
 
@@ -174,7 +177,9 @@ function Setup()
   playButton.addEventListener("click", function onclick(event) 
   {
     appIsRunning = true;
-    appIsRunningWithTimer = true;
+    if (!appIsRunningWithCD && !appIsRunningWithTimer) {
+      totalTimeInHercules();
+    }
     Play();
     event.preventDefault();
   }
@@ -204,8 +209,17 @@ function Setup()
   countdownPlayButton.addEventListener("click", function onclick(event) 
   {
     appIsRunning = true;
-    appIsRunningWithCD = true;
-    Countdown();
+    if (!appIsRunningWithTimer && !appIsRunningWithCD) {
+      totalTimeInHercules();
+    }
+    //  Reject button click after countdown is active
+    if(!countdownIsActive) {
+      Countdown();
+    }
+    //  After reset it is allowed to start CD over again
+    if (iAmResetInCD && !countdownIsActive) {
+      Countdown();
+    }
     event.preventDefault();
   }
   );
@@ -221,7 +235,7 @@ function Setup()
   countdownResetButton = document.getElementById("js-resetCD");
   countdownResetButton.addEventListener("click", function onclick(event) 
   {
-    //UserReset();
+    resetCD();
     event.preventDefault();
   }
   );
@@ -293,7 +307,7 @@ function Setup()
       .text("00:00")
       .attr("font-family", "sans-serif")
       .attr("font-size", "30px")
-      .attr("fill", "navy")
+      .attr("fill", "black")
       .attr("id", "total"); // new ID, search for his connetions
 
 
@@ -375,15 +389,8 @@ function Setup()
 
 function Play()
 {
-  // Total time must go on here or in Countdown MODE
-  //totalTimeInHercules();
-
-  //if (appIsRunningWithTimer) {}
-  // Total time goes if there is pressed play button, timer or CD
-  if (appIsRunning && !appIsRunningWithCD) {
-    console.log("OPAAAAAAAAAAAAA");
-    totalTimeInHercules();
-  }
+  //  Total Hercules time is activated by timer play button
+  appIsRunningWithTimer = true;
 
 
 
@@ -1003,35 +1010,10 @@ function Reset()
 function UserReset()
 {  
   Reset();
-  ResetCycles(); 
   // Determine cat sounds again
   RandomCatSound();
 }
 // ---------------------------------------------------------------------------------- //
-
-function ResetCycles()
-{   
-    // Cycles cycle
-    arcTimer = d3.arc()
-      .innerRadius(25)
-      .outerRadius(35)
-      .startAngle(1 * (pi/180)) //converting from degs to radians
-      // MAX -  6.30(2*PI) 
-      // MIN -  0
-      .endAngle(6.3) //just radians
-
-    svg.append("path")
-      .attr("d", arcTimer)
-      .attr("fill", "lightgray")
-      .attr("transform", "translate(150,270)");
-
-    clearInterval(cyclesInterval);
-    clearInterval(cyclesColoringInterval);
-}
-// ---------------------------------------------------------------------------------- //
-
-
-
 
 
 
@@ -1205,15 +1187,13 @@ function DirectCheckCountdown(directValue)
 }
 // ---------------------------------------------------------------------------------- //
 
-function Countdown() {
+function Countdown() 
+{
+  //  Countdown is activated
+  countdownIsActive = true;
 
-
-// TOTAL TIMEEEE
-  // Total time goes if there is pressed play button, timer or CD
-  if (appIsRunning && !appIsRunningWithTimer) {
-    console.log("OPAAAAAAAAAAAAA");
-    totalTimeInHercules();
-  }
+  //  Total Hercules time is activated by countdown play button
+  appIsRunningWithCD = true;
 
   //  COUNTDOWN MODE - user input, independent from any other input
   countdownValue = document.getElementById("countdown").value;
@@ -1227,8 +1207,8 @@ function Countdown() {
   var seconds = time%60;
 
 
-  console.log("Minutes : " + minutes + " min");
-  console.log("Seconds : " + seconds + " sec");
+  //console.log("Minutes : " + minutes + " min");
+  //console.log("Seconds : " + seconds + " sec");
 
 
   //  Invode display method
@@ -1269,9 +1249,8 @@ function Countdown() {
       //console.log("Seconds : " + seconds + " sec");
   }
   
-
   //  Set counting time interval for countdown option
-  var startCountingCountdown = setInterval(CountCountdown, 1000);
+  startCountingCountdownInterval = setInterval(CountCountdown, 1000);
 
   //  Invoke countodown timer 
   function CountCountdown() {
@@ -1288,25 +1267,64 @@ function Countdown() {
     //  Now display minutes and second again
     NiceCountdownDisplay();
 
-
     //  If there is 5min or 2min then make some noise
     if((minutes==5 && seconds==0) || (minutes==2 && seconds==0)) {
       //countdownBeepSound.play();
       countdownBeepSound.play();
     }
-
+    
     // Take care about end
     if(minutes == 0  && seconds==0) {
-      clearInterval(startCountingCountdown);
+      clearInterval(startCountingCountdownInterval);
       countdownBeepSound.play();
     }
+
   }
 }
-
 // ------------------------------------------------------------------------------------------------- //
+
+
+function resetCD()
+{   
+  //pauseIsOn = false;
+  //playIsActive = false;
+
+
+  d3.select("#countdownDisplay").text("00:00");
+  clearInterval(startCountingCountdownInterval);
+
+  countdownIsActive = false;
+  iAmResetInCD = true;
+
+
+  // Sound methods, turn off
+/*  if(workModeIsActive)
+  {
+      workBeepSound.pause();
+      console.log("Reset in workMode");
+  }
+  else if(restModeIsActive)
+  {
+      restBeepSound.pause();
+      console.log("Reset in restMode");
+  }
+  else
+  {
+    console.log("Reset in prepareMode");
+  }*/
+}
+// ---------------------------------------------------------------------------------- //
+
+
+
+
+
+
+
+
+
 function totalTimeInHercules() 
 {
-
   var totalAPPRunningTime;
 
   var minutes_float = time/60;
@@ -1368,34 +1386,15 @@ function totalTimeInHercules()
     //  Every second increase one second  :)
     seconds++;
 
-    //  If second are under 0, decrease minutes and put seconds to 59
-    if(seconds<0) {
-      minutes--;
-      seconds = 59;
+    //  If second are more then 59, increase minutes and put seconds to 00 :)
+    if(seconds>59) {
+      minutes++;
+      seconds = 00;
     }
 
     //  Now display minutes and second again
     NiceCountdownDisplay();
-
-
-/*    
-//  If there is 5min or 2min then make some noise
-    if((minutes==5 && seconds==0) || (minutes==2 && seconds==0)) {
-      //countdownBeepSound.play();
-      countdownBeepSound.play();
-    }
-
-    // Take care about end
-    if(minutes == 0  && seconds==0) {
-      clearInterval(startCountingCountdown);
-      countdownBeepSound.play();
-    }
-  */
   } 
-
-
-  //  TAKE CAREEEE
-  //clearInterval(totalHerculesTime);
 }
 
 // ------------------------------------------------------------------------------------------------- //
