@@ -14,8 +14,6 @@ var pi = Math.PI;
 \*  ------------------------------------------------ */
 
 var arcTimer;
-var arcCycle;
-var arcTabatas;
 
 
 
@@ -36,11 +34,6 @@ var workValue,
 var restValue,
     topRestValue;
 
-var cyclesValue,
-    topCyclesValue;
-
-var tabatasValue,
-    topTabatasValue;
 
 
 
@@ -57,13 +50,10 @@ var workColoringInterval;
 var restInterval;
 var restColoringInterval;
 
-var cyclesInterval;
-var cyclesColoringInterval;
 
 
 var currentTimerArcValue;
-var currentCycleArcValue;
-var currentTabatasArcValue;
+
 
 //  Displaying minutes and second for countdown
 var minutesAndSecondDisplay;
@@ -78,7 +68,8 @@ var minutesAndSecondDisplay;
 var prepareCounter;
 var workCounter;
 var restCounter;
-var cyclesCounter;
+
+
 
 
 
@@ -121,6 +112,10 @@ var countdownButton;
 /*  ------------------------------------------------ *\
 *   CAT SOUND
 \*  ------------------------------------------------ */
+
+
+//  DEAFULT NUMBER, was describe by CYCLES now we need nem metodology
+var deafultMJAU = 2;
 
 // Do that in variables PART????
 //topCyclesValue = 4; // Extande this default value to all variables in this part, MAYBE!
@@ -179,18 +174,6 @@ function Setup()
   }
   );
 
-  countdownButton = document.getElementById("js-countdown");
-  countdownButton.addEventListener("click", function onclick(event) 
-  {
-    Countdown();
-    event.preventDefault();
-  }
-  );
-
-
-  
-
-
 
 
 /*  ------------------------------------------------ *\
@@ -215,24 +198,6 @@ function Setup()
       .style("fill","white")
       //  Circle width
       .style("stroke-width","16"); //    CHANGED TO 16 from 8
-                  
-    // Cycle circle
-    svg.append("circle")
-      .attr("cx","150")
-      .attr("cy","270")
-      .attr("r","30")
-      .style("stroke","lightgray")
-      .style("stroke-width","8")
-      .style("fill","white");
-
-    // Tabatas circle
-    svg.append("circle")
-      .attr("cx","250")
-      .attr("cy","270")
-      .attr("r","30")
-      .style("stroke","lightgray")
-      .style("stroke-width","8")
-      .style("fill","white");
 
 // ------------------------------  TEXT  --------------------------------------------- // 
 
@@ -246,23 +211,14 @@ function Setup()
         .attr("fill", "gray")
         .attr("id","mainTitle");
 
-    // Text for cycles, mini-heading "CYCLES"
     svg.append("text")
-        .attr("x", "134")
-        .attr("y", "264")
-        .text("CYCLES")
+        .attr("x", "165")
+        .attr("y", "230")
+        .text("TOTAL")
         .attr("font-family", "sans-serif")
-        .attr("font-size", "8px")
-        .attr("fill", "gray");
-
-    // Text for tabatas, mini-heading "TABATAS"
-    svg.append("text")
-        .attr("x", "234")
-        .attr("y", "264")
-        .text("TABATAS")
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "8px")
-        .attr("fill", "gray");
+        .attr("font-size", "20px")
+        .attr("fill", "gray")
+        .attr("id","mainTitle");
 
 // -------------------------------  NUMBERS  -------------------------------------------- //
 
@@ -280,50 +236,23 @@ function Setup()
 
 
 
-//    NEW ONE FOR COUNTDOWNS
+//    NEW ONE FOR COUNTDOWNS  (IT WILL BE TOTAL!)
   svg.append("text")
         .attr("x", "162")
-        .attr("y", "229")
+        .attr("y", "279")
         //.attr("x", function(d) { return d.cx; })
         .text("00:00")
         .attr("font-family", "sans-serif")
         .attr("font-size", "30px")
-        .attr("fill", "black")
+        .attr("fill", "navy")
         .attr("id", "countdownDisplay"); // new ID, search for his connetions
-
-
-
-
-  //Add the variable number for cycles
-    svg.append("text")
-        .attr("x", "146")
-        .attr("y", "282")
-        .text("0")
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "14px")
-        .attr("fill", "black")
-        .attr("id", "cyclesTimerDisplay");
-
-  //Add the variable number for tabatas
-    svg.append("text")
-        .attr("x", "246")
-        .attr("y", "282")
-        .text("0")
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "14px")
-        .attr("fill", "black")
-        .attr("id", "tabatasTimerDisplay");
-
-
-
-
 
 /*  ------------------------------------------------ *\
 *   SECOND TIMER
 \*  ------------------------------------------------ */
 
   //  SVG area for second circle
-  svg = d3.select("#js-clock2")
+  svg2 = d3.select("#js-clock2")
       .append("svg")
       .attr("width", width)
       .attr("height", height);
@@ -332,7 +261,7 @@ function Setup()
 // ------------------------------  CIRCLE  --------------------------------------------- // 
 
   //  Timer circle
-  svg.append("circle")
+  svg2.append("circle")
       //  X,Y coordintates
       .attr("cx","200")
       .attr("cy","190")
@@ -348,7 +277,7 @@ function Setup()
 // ------------------------------  TEXT  --------------------------------------------- // 
 
   //  Text for timer, heading "COUNTDOWN"
-  svg.append("text")
+  svg2.append("text")
      .attr("x", "120")
      .attr("y", "150")
      .text("COUNTDOWN")
@@ -361,7 +290,7 @@ function Setup()
 // -------------------------------  NUMBERS  -------------------------------------------- //
 
     //Add the variable number for MAIN TIMER
-    svg.append("text")
+    svg2.append("text")
        .attr("x", "115")
        .attr("y", "220")
        //.attr("x", function(d) { return d.cx; })
@@ -435,20 +364,11 @@ function Play()
             restValue = document.getElementById("rest").value;
             topRestValue = restValue;
 
-            //  CYCLES user input
-            cyclesValue = document.getElementById("cycles").value;
-            topCyclesValue = cyclesValue;
-            // Important counter for right naumber display
-            cyclesCounter = topCyclesValue;
-
-            //  TABATAS user input
-            tabatasValue = document.getElementById("tabatas").value;
-            topTabatasValue = tabatasValue;
 
             // in case where there is not PREPARE mode, HC version
             if(prepareValue==0) {
               //  Maximal sound actions
-              mainSoundActionCounter = topCyclesValue * 2;  // IN HC there is 8 sound actions
+              mainSoundActionCounter = deafultMJAU * 2;  // IN HC there is 8 sound actions
               //  Number of MJAU sound
               maximalMjauSounds = mainSoundActionCounter * mjauINDEX;
               //  Define random cat sound (MJAU)
@@ -457,7 +377,7 @@ function Play()
             }
             else {
               //  Maximal sound actions
-              mainSoundActionCounter = topCyclesValue * 2;  // IN HC there is 8 sound actions
+              mainSoundActionCounter = deafultMJAU * 2;  // IN HC there is 8 sound actions
               //  Number of MJAU sound
               maximalMjauSounds = mainSoundActionCounter * mjauINDEX;
               //  Define random cat sound (MJAU)
@@ -544,8 +464,6 @@ function PrepareBasicDisplay()
         .attr("x", "145")
         .attr("y", "189");
   }
-  d3.select("#cyclesTimerDisplay").text(topCyclesValue);
-  d3.select("#tabatasTimerDisplay").text(topTabatasValue);
 }
 // ---------------------------------------------------------------------------------- //
  
@@ -590,7 +508,7 @@ function Work()
       // Stop REST sound
       restBeepSound.pause();
     }
-    /// CHECK THOS BECAUS OF MJAU !!!!!!!!!!!!!!!!!!
+    /// CHECK THIS BECAUSE OF MJAU !!!!!!!!!!!!!!!!!!
     if(!pauseIsOn)
     {
       //  Check if MRNJAU sound is possible
@@ -652,7 +570,6 @@ function WorkBasicDisplay()
     .attr("x", "167")
     .text("WORK");
   d3.select("#mainTimerDisplay").text(topWorkValue);
-  d3.select("#cyclesTimerDisplay").text(cyclesCounter);
 }
 
 // ---------------------------------------------------------------------------------- //
@@ -680,8 +597,8 @@ function Rest()
 
     if(!pauseIsOn)
     {
-      CyclesCalculate();
-      CyclesArcDraw();
+      //CyclesCalculate();
+      //CyclesArcDraw();
     }
 
     // Start execution loop (one turn) defined by user
@@ -733,17 +650,10 @@ function RestCalcute()
     correctPositionDisplay();
     if(restValue<1)
     {
-        if(cyclesCounter<1)
-        {
-          GameOver();
-        }
-        else
-        {
-          d3.select("#mainTimerDisplay").text(topWorkValue);
-          Reset();
-          Work();
-        }
-        restValue = topRestValue;
+      d3.select("#mainTimerDisplay").text(topWorkValue);
+      Reset();
+      Work();
+      restValue = topRestValue;
     }
     else
     {
@@ -765,7 +675,6 @@ function RestBasicDisplay()
     .attr("x", "171")
     .text("REST");
   d3.select("#mainTimerDisplay").text(topRestValue);
-  d3.select("#cyclesTimerDisplay").text(--cyclesCounter);
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -775,10 +684,9 @@ function GameOver()
   Reset();
   ResetCycles();
   d3.select("#mainTimerDisplay").text("0");
-  d3.select("#cyclesTimerDisplay").text("0");
   d3.select("#mainTitle")
-  .attr("x", "147")
-  .text("HERCULES");
+    .attr("x", "147")
+    .text("HERCULES");
 }
 // ---------------------------------------------------------------------------------- //
 
@@ -937,43 +845,6 @@ function checkCircleEnd()
 
 
 
-
-// ----------------------      CYCLES  VIZUALIZATION  ------------------------------- //
-function CyclesCalculate()
-{
-    cyclesValue--;
-    var scale = d3.scaleLinear() 
-      .domain([0,topCyclesValue]) 
-      .range([0,6.4]);
-    var currentDistanceValue = topCyclesValue-cyclesValue;
-    currentCyclesArcValue = scale(currentDistanceValue);
-}
-// ---------------------------------------------------------------------------------- //
-
-function CyclesArcDraw()
-{
-    var currentValue = currentCyclesArcValue;
-
-    console.log("Bojam : " + currentValue);
-
-    arcTimer = d3.arc()
-      .innerRadius(25.5)
-      .outerRadius(34.5)
-      .startAngle(1 * (pi/180)) //converting from degs to radians
-      // MAX -  6.30(2*PI) 
-      // MIN -  0
-      .endAngle(currentValue) //just radians
-
-    svg.append("path")
-      .attr("d", arcTimer)
-      .attr("fill", "#000000")
-      .attr("transform", "translate(150,270)");
-}
-// ---------------------------------------------------------------------------------- //
-
-
-
-
 /*  ------------------------------------------------ *\
 *   PAUSE  METHOD 
 \*  ------------------------------------------------ */
@@ -990,7 +861,6 @@ function Pause()
   }
   else if(restModeIsActive)
   {
-      cyclesCounter++;
       clearInterval(restInterval);
       clearInterval(restColoringInterval);
       restBeepSound.pause();
@@ -1210,24 +1080,6 @@ function InputCheckRest()
   document.getElementById("rest").value = checkValue;
 }
 
-function InputCheckCycle()
-{
-  var checkValue = document.getElementById("cycles").value;
-  var checkValueINT = parseInt(checkValue);
-
-  checkValue = DirectCheck(checkValueINT);
-  document.getElementById("cycles").value = checkValue;
-}
-
-function InputCheckTabatas()
-{
-  var checkValue = document.getElementById("tabatas").value;
-  var checkValueINT = parseInt(checkValue);
-
-
-  checkValue = DirectCheck(checkValueINT);
-  document.getElementById("tabatas").value = checkValue;
-}
 // ---------------------------------------------------------------------------------- //
 function DirectCheck(directValue)
 {
