@@ -8,22 +8,23 @@ var height = "100%";
 var pi = Math.PI;
 
 
+//  Used for second timer - countdown timer
+var svg2;
 
 /*  ------------------------------------------------ *\
 *   D3  ARC 
 \*  ------------------------------------------------ */
 
-var arcTimer;
+var arcTimer,
+    arcTimerForCountdown;
+
+var currentCountdownArcValue;
 
 
 
 /*  ------------------------------------------------ *\
 *   USER INPUT
-\*  ------------------------------------------------ */
-
-// New one for CD
-var countdownValue,
-    topCountdownValue;    
+\*  ------------------------------------------------ */  
 
 var prepareValue,
     topPrepareValue;
@@ -34,7 +35,9 @@ var workValue,
 var restValue,
     topRestValue;
 
-
+// New one for CD
+var countdownValue,
+    topCountdownValue;  
 
 
 /*  ------------------------------------------------ *\
@@ -89,11 +92,11 @@ var catBeepSound; // New one
 
 var playIsActive = false;
 
-var prepareModeIsActive = false;
-var workModeIsActive = false;
-var restModeIsActive = false;
+var prepareModeIsActive = false,
+    workModeIsActive    = false,
+    restModeIsActive    = false;
 
-var secondTurnCycleBoolean = false;
+var secondTurnCycleBoolean  = false;
 var soundSecondTurnCheacker = false;
 var pauseIsOn = false;
 
@@ -169,9 +172,9 @@ var mrnjauSoundArray = [];
 
 function Setup() 
 {
-/*  ------------------------------------------------ *\
-*   TIMER BUTTONS LISTENER
-\*  ------------------------------------------------ */
+  /*  ------------------------------------------------ *\
+  *   TIMER BUTTONS LISTENER
+  \*  ------------------------------------------------ */
 
   playButton = document.getElementById("js-play");
   playButton.addEventListener("click", function onclick(event) 
@@ -201,9 +204,9 @@ function Setup()
   }
   );
 
-/*  ------------------------------------------------ *\
-*   COUNTODOWN BUTTONS LISTENER
-\*  ------------------------------------------------ */
+  /*  ------------------------------------------------ *\
+  *   COUNTODOWN BUTTONS LISTENER
+  \*  ------------------------------------------------ */
 
   countdownPlayButton = document.getElementById("js-playCD");
   countdownPlayButton.addEventListener("click", function onclick(event) 
@@ -227,7 +230,7 @@ function Setup()
   countdownPauseButton = document.getElementById("js-pauseCD");
   countdownPauseButton.addEventListener("click", function onclick(event) 
   {
-    //Pause();
+    PauseCD();
     event.preventDefault();
   }
   );
@@ -265,8 +268,6 @@ function Setup()
       //  Circle width
       .style("stroke-width","16"); //    CHANGED TO 16 from 8
 
-// ------------------------------  TEXT  --------------------------------------------- // 
-
     //  Text for timer, heading "HERCULES"
     svg.append("text")
         .attr("x", "147")
@@ -286,7 +287,6 @@ function Setup()
         .attr("fill", "gray")
         .attr("id","mainTitle");
 
-// -------------------------------  NUMBERS  -------------------------------------------- //
 
     //  Add the variable number for MAIN TIMER
     svg.append("text")
@@ -324,8 +324,6 @@ function Setup()
       .attr("height", height);
 
 
-// ------------------------------  CIRCLE  --------------------------------------------- // 
-
   //  Timer circle
   svg2.append("circle")
       //  X,Y coordintates
@@ -340,8 +338,6 @@ function Setup()
       .style("stroke-width","16"); //    CHANGED TO 16 from 8
                   
 
-// ------------------------------  TEXT  --------------------------------------------- // 
-
   //  Text for timer, heading "COUNTDOWN"
   svg2.append("text")
      .attr("x", "120")
@@ -352,8 +348,6 @@ function Setup()
      .attr("fill", "gray")
      .attr("id","mainTitle");
 
-
-// -------------------------------  NUMBERS  -------------------------------------------- //
 
     //Add the variable number for MAIN TIMER
     svg2.append("text")
@@ -469,7 +463,7 @@ function Play()
 
 
 /*  ------------------------------------------------ *\
-*   PREPARE/WORK/REST METHODS
+*   PREPARE METHOD
 \*  ------------------------------------------------ */
 
 function Prepare()
@@ -542,12 +536,14 @@ function PrepareBasicDisplay()
 
 
 
-// ---------------------------    WORK MODE   -------------------------------------- //
+/*  ------------------------------------------------ *\
+*   WORK METHOD
+\*  ------------------------------------------------ */
+
 function Work()
 { 
     //  Define position/MODE
     console.log("WORK sam");
-
 
     //  Tell me about mjau counter
     console.log("Mjau counter (W): " + endSoundsCounter);
@@ -562,8 +558,8 @@ function Work()
     } 
 
     prepareModeIsActive = false;
-    workModeIsActive = true;
-    restModeIsActive = false;
+    workModeIsActive =     true;
+    restModeIsActive =    false;
 
     // Start execution loop (one turn) defined by user
     WorkCalcute();
@@ -648,8 +644,10 @@ function WorkBasicDisplay()
 
 
 
+/*  ------------------------------------------------ *\
+*   REST METHOD
+\*  ------------------------------------------------ */
 
-// ---------------------------    REST MODE METHOD -------------------------------------- //
 function Rest()
 {
     //  Define position/MODE
@@ -1087,106 +1085,10 @@ function RandomCatSound() {
 
 
 /*  ------------------------------------------------ *\
-*   INPUT CHECK METHODS
+*   COUNTDOWN METHOD
 \*  ------------------------------------------------ */
 
-function InputCheckCountdown()
-{
-  var checkValue = document.getElementById("countdown").value;
-  var checkValueINT = parseInt(checkValue);
-
-  checkValue = DirectCheckCountdown(checkValueINT);
-  document.getElementById("countdown").value = checkValue;
-}
-
-function InputCheckPrepare()
-{
-  var checkValue = document.getElementById("prepare").value;
-  var checkValueINT = parseInt(checkValue);
-
-  checkValue = DirectCheckPrepare(checkValueINT);
-  document.getElementById("prepare").value = checkValue;
-}
-
-function InputCheckWork()
-{
-  var checkValue = document.getElementById("work").value;
-  var checkValueINT = parseInt(checkValue);
-
-  checkValue = DirectCheck(checkValueINT);
-  document.getElementById("work").value = checkValue;
-}
-
-function InputCheckRest()
-{
-  var checkValue = document.getElementById("rest").value;
-  var checkValueINT = parseInt(checkValue);
-
-  checkValue = DirectCheck(checkValueINT);
-  document.getElementById("rest").value = checkValue;
-}
-
-// ---------------------------------------------------------------------------------- //
-function DirectCheck(directValue)
-{
-    checkValueINT = directValue;
-    if (isNaN(checkValueINT)) 
-    {
-      alert("You have not entered a number. \n\n Please enter a number!");
-      return 4;
-    }
-    if ((checkValueINT < 1 ) || (checkValueINT > 300))
-    {
-      alert("Please enter number that can be used in this application. Thank you.");
-      return 4;
-    }
-    else 
-    {
-      return checkValueINT;
-    }
-}
-// ---------------------------------------------------------------------------------- //
-
-function DirectCheckPrepare(directValue)
-{
-    checkValueINT = directValue;
-    if (isNaN(checkValueINT)) 
-    {
-      alert("You have not entered a number. \n\n Please enter a number!");
-      return 4;
-    }
-    if ((checkValueINT < 0 ) || (checkValueINT > 300))
-    {
-      alert("Please enter number that can be used in this application. Thank you.");
-      return 4;
-    }
-    else 
-    {
-      return checkValueINT;
-    }
-}
-// ---------------------------------------------------------------------------------- //
-
-function DirectCheckCountdown(directValue)
-{
-    checkValueINT = directValue;
-    if (isNaN(checkValueINT)) 
-    {
-      alert("You have not entered a number. \n\n Please enter a number!");
-      return 300;
-    }
-    if ((checkValueINT < 30 ) || (checkValueINT > 3600))
-    {
-      alert("Please enter number that can be used in this application. Thank you.");
-      return 300;
-    }
-    else 
-    {
-      return checkValueINT;
-    }
-}
-// ---------------------------------------------------------------------------------- //
-
+// Countdown equals to play button on regular timer
 function Countdown() 
 {
   //  Countdown is activated
@@ -1199,19 +1101,19 @@ function Countdown()
   countdownValue = document.getElementById("countdown").value;
   topCountdownValue = countdownValue;
 
+  //  Define minutes and second from user input
+  var minutes = topCountdownValue;
+  var seconds = 0;
 
-  var time = topCountdownValue;
-  //var time = 662;
-  var minutes_float = time/60;
-  var minutes = Math.floor(minutes_float);
-  var seconds = time%60;
+  //  Define minutes for drawind
+  var drawingMinutes = topCountdownValue;
 
 
   //console.log("Minutes : " + minutes + " min");
   //console.log("Seconds : " + seconds + " sec");
 
 
-  //  Invode display method
+  //  Invoke display method, display maximal value just once
   NiceCountdownDisplay();
 
   //  Inside function, needs outside variables for functionallity
@@ -1262,9 +1164,13 @@ function Countdown()
     if(seconds<0) {
       minutes--;
       seconds = 59;
+
+      // Draw in cirlce after every minute
+      DrawCountdownCircle(topCountdownValue, minutes); 
+      console.log("Tocne minute : " + minutes );
     }
 
-    //  Now display minutes and second again
+    //  Now display minutes and second again (and again and again)
     NiceCountdownDisplay();
 
     //  If there is 5min or 2min then make some noise
@@ -1279,8 +1185,103 @@ function Countdown()
       countdownBeepSound.play();
     }
 
+    /*  ------------------------------------------------ *\
+    *   COUNTDOWN DRAW METHOD
+    \*  ------------------------------------------------ */
+
+
+    function DrawCountdownCircle(maxValue, countdownMinutes) 
+    {
+        //correctPositionDisplay();
+
+        if(countdownMinutes<=0)
+        {
+          //d3.select("#mainTimerDisplay").text(topWorkValue);
+          //Reset();
+          //Work();
+          //restValue = topRestValue;
+        }
+        else
+        {
+          //countdownMinutes--;
+
+          console.log("Value(C) : " + countdownMinutes);
+
+          //d3.select("#mainTimerDisplay").text(restValue);
+
+          var skala = d3.scaleLinear() 
+            .domain([0,maxValue]) 
+            .range([0,6.4]);
+
+          // Current value in corelation with maximal value, must be draw 
+          currentCountdownArcValue = skala(maxValue-countdownMinutes);
+          // Prati vrijeme , minuut pominutu
+
+          arcTimerCountdown();
+        }
+
+
+
+        // BOJANJE
+
+        function arcTimerCountdown()
+        {
+            checkCircleEnd();
+            var currentValue = currentCountdownArcValue;
+
+            console.log("Bojam (Q): " + currentValue);
+
+            arcTimerForCountdown = d3.arc()
+              .innerRadius(142.5)  // Old 170
+              .outerRadius(157.5)  // Old 180
+              .startAngle(1 * (pi/180)) //converting from degs to radians
+              // MAX -  6.30(2*PI) 
+              // MIN -  0
+              .endAngle(currentValue) //just radians
+
+            svg2.append("path")
+              .attr("d", arcTimerForCountdown)
+              .attr("fill", "#FF00FF")
+              .attr("transform", "translate(200,190)");
+        }
+
+        function checkCircleEnd()
+        {
+          if(currentCountdownArcValue > 6.7)
+          {
+            arcTimerForCountdown = d3.arc()
+              .innerRadius(142.5)
+              .outerRadius(157.5)
+              .startAngle(1 * (pi/180)) //converting from degs to radians
+              // MAX -  6.30(2*PI) 
+              // MIN -  0
+              .endAngle(6.3) //just radians
+
+            svg2.append("path")
+              .attr("d", arcTimerForCountdown)
+              .attr("fill", "lightgray")
+              .attr("transform", "translate(200,190)");
+
+            //currentCountdownArcValue = 0;
+          }
+        }
+
+
+
+
+
+    }
+
+    
+
+
   }
 }
+
+
+
+
+
 // ------------------------------------------------------------------------------------------------- //
 
 
@@ -1295,6 +1296,19 @@ function resetCD()
 
   countdownIsActive = false;
   iAmResetInCD = true;
+
+  arcTimerForCountdown = d3.arc()
+    .innerRadius(142)
+    .outerRadius(158)
+    .startAngle(1 * (pi/180)) //converting from degs to radians
+    // MAX -  6.30(2*PI) 
+    // MIN -  0
+    .endAngle(6.3) //just radians
+
+    svg2.append("path")
+      .attr("d", arcTimerForCountdown)
+      .attr("fill", "lightgray")
+      .attr("transform", "translate(200,190)");
 
 
   // Sound methods, turn off
@@ -1316,7 +1330,11 @@ function resetCD()
 // ---------------------------------------------------------------------------------- //
 
 
-
+function pauseCD()
+{   
+  
+}
+// ---------------------------------------------------------------------------------- //
 
 
 
@@ -1331,9 +1349,9 @@ function totalTimeInHercules()
   var minutes = Math.floor(minutes_float);
   var seconds = time%60;
 
-
-  console.log("Minutes : " + minutes + " min");
-  console.log("Seconds : " + seconds + " sec");
+  // Test
+  //console.log("Minutes : " + minutes + " min");
+  //console.log("Seconds : " + seconds + " sec");
 
 
   //  Invoke display method
@@ -1366,7 +1384,8 @@ function totalTimeInHercules()
           }
       }
 
-      console.log("TOTAL : " + totalAPPRunningTime);
+      // Test
+      //console.log("TOTAL : " + totalAPPRunningTime);
 
       //  Take SVG counter text and display new value
       d3.select("#total").text(totalAPPRunningTime);
