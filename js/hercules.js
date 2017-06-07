@@ -98,7 +98,11 @@ var prepareModeIsActive = false,
 
 var secondTurnCycleBoolean  = false;
 var soundSecondTurnCheacker = false;
-var pauseIsOn = false;
+
+
+
+var pauseIsOn =     false,
+    pauseIsOnInCD = false;
 
 //  Important for cat sound. 
 var iAmInSoundArray = false;
@@ -163,7 +167,10 @@ var endsFollowedBySound = [];
 var mrnjauSoundArray = [];
 
 
+//  OTHER ------------
 
+var countdownGlobalMinutes,
+    countdownGlobalSeconds;
 
 
 /*  ------------------------------------------------ *\
@@ -217,6 +224,11 @@ function Setup()
     }
     //  Reject button click after countdown is active
     if(!countdownIsActive) {
+      Countdown();
+    }
+
+    //  Start after pause mode
+    if (pauseIsOnInCD) {
       Countdown();
     }
     //  After reset it is allowed to start CD over again
@@ -1097,20 +1109,33 @@ function Countdown()
   //  Total Hercules time is activated by countdown play button
   appIsRunningWithCD = true;
 
-  //  COUNTDOWN MODE - user input, independent from any other input
-  countdownValue = document.getElementById("countdown").value;
-  topCountdownValue = countdownValue;
-
-  //  Define minutes and second from user input
-  var minutes = topCountdownValue;
-  var seconds = 0;
-
-  //  Define minutes for drawind
-  var drawingMinutes = topCountdownValue;
+  var minutes;
+  var seconds;
 
 
-  //console.log("Minutes : " + minutes + " min");
-  //console.log("Seconds : " + seconds + " sec");
+  if (pauseIsOnInCD) {
+
+      minutes = countdownGlobalMinutes;
+      seconds = countdownGlobalSeconds;
+
+      pauseIsOnInCD = false;
+  }
+  else 
+  {
+    //  COUNTDOWN MODE - user input, independent from any other input
+    countdownValue = document.getElementById("countdown").value;
+    topCountdownValue = countdownValue;
+
+    //  Define minutes and second from user input
+    minutes = topCountdownValue;
+    seconds = 0;
+
+  }
+
+
+
+  console.log("Minutes : " + minutes + " min");
+  console.log("Seconds : " + seconds + " sec");
 
 
   //  Invoke display method, display maximal value just once
@@ -1178,6 +1203,10 @@ function Countdown()
       //countdownBeepSound.play();
       countdownBeepSound.play();
     }
+
+    // Pause variables copy
+    countdownGlobalMinutes = minutes;
+    countdownGlobalSeconds = seconds;
     
     // Take care about end
     if(minutes == 0  && seconds==0) {
@@ -1330,9 +1359,14 @@ function resetCD()
 // ---------------------------------------------------------------------------------- //
 
 
-function pauseCD()
+function PauseCD()
 {   
-  
+  pauseIsOnInCD = true;
+
+  clearInterval(startCountingCountdownInterval);
+
+  console.log("CD pauziran");
+
 }
 // ---------------------------------------------------------------------------------- //
 
