@@ -1109,8 +1109,11 @@ function Countdown()
   //  Total Hercules time is activated by countdown play button
   appIsRunningWithCD = true;
 
-  var minutes;
-  var seconds;
+  var minutes,
+      seconds;
+
+  var copyOfMinutes,
+      copyOfSeconds;
 
 
   if (pauseIsOnInCD) {
@@ -1128,14 +1131,17 @@ function Countdown()
 
     //  Define minutes and second from user input
     minutes = topCountdownValue;
+    copyOfMinutes = minutes;
+    
     seconds = 0;
+    copyOfSeconds = seconds;
 
   }
 
 
 
-  console.log("Minutes : " + minutes + " min");
-  console.log("Seconds : " + seconds + " sec");
+  //console.log("Start Minutes : " + minutes + " min");
+  //console.log("Start Seconds : " + seconds + " sec");
 
 
   //  Invoke display method, display maximal value just once
@@ -1191,8 +1197,9 @@ function Countdown()
       seconds = 59;
 
       // Draw in cirlce after every minute
-      DrawCountdownCircle(topCountdownValue, minutes); 
-      console.log("Tocne minute : " + minutes );
+      DrawCountdownCircle(topCountdownValue, copyOfMinutes); 
+
+      console.log("Minute za bojanje : " + copyOfMinutes--);
     }
 
     //  Now display minutes and second again (and again and again)
@@ -1210,6 +1217,7 @@ function Countdown()
     
     // Take care about end
     if(minutes == 0  && seconds==0) {
+
       clearInterval(startCountingCountdownInterval);
       countdownBeepSound.play();
     }
@@ -1223,7 +1231,7 @@ function Countdown()
     {
         //correctPositionDisplay();
 
-        if(countdownMinutes<=0)
+        if(countdownMinutes<0)
         {
           //d3.select("#mainTimerDisplay").text(topWorkValue);
           //Reset();
@@ -1232,21 +1240,36 @@ function Countdown()
         }
         else
         {
-          //countdownMinutes--;
+          //  Increase because of 3:59 althogu 4:00 is strating point         
+          //countdownMinutes++;
 
           console.log("Value(C) : " + countdownMinutes);
 
           //d3.select("#mainTimerDisplay").text(restValue);
 
-          var skala = d3.scaleLinear() 
-            .domain([0,maxValue]) 
-            .range([0,6.4]);
+          // Jump over first drawing because it is unnecessery
+          if (countdownMinutes!=maxValue) 
+          {
+      
+            var skala = d3.scaleLinear() 
+              .domain([0,maxValue]) 
+              .range([0,6.4]);
 
-          // Current value in corelation with maximal value, must be draw 
-          currentCountdownArcValue = skala(maxValue-countdownMinutes);
-          // Prati vrijeme , minuut pominutu
+            // Current value in corelation with maximal value, must be draw 
+            currentCountdownArcValue = skala(maxValue-countdownMinutes);
+            //console.log("Vrijednost bojanja) : " + currentCountdownArcValue);
+            // Prati vrijeme , minuut pominutu
 
-          arcTimerCountdown();
+            //countdownMinutes--; 
+
+            arcTimerCountdown();
+
+          }
+
+
+          //  Return value to normal after problem with X:59
+          //countdownMinutes--;
+
         }
 
 
@@ -1258,7 +1281,7 @@ function Countdown()
             checkCircleEnd();
             var currentValue = currentCountdownArcValue;
 
-            console.log("Bojam (Q): " + currentValue);
+            //console.log("Bojam (Q): " + currentValue);
 
             arcTimerForCountdown = d3.arc()
               .innerRadius(142.5)  // Old 170
@@ -1294,16 +1317,7 @@ function Countdown()
             //currentCountdownArcValue = 0;
           }
         }
-
-
-
-
-
     }
-
-    
-
-
   }
 }
 
